@@ -1,3 +1,3 @@
 import streamlit as st
 
-st.writer("Hooray, we connected everything")
+st.write("Hooray, we connected everything")
