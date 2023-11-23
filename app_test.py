@@ -1,6 +1,8 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
 
 # Function to format camelCase names into a readable format
 def format_camel_case(name):
@@ -63,3 +65,25 @@ if stock_data:
     # Styling the DataFrame
     st.write(comparison_df.style.set_properties(**{'border-color': 'black', 'border-width': '1px', 'border-style': 'solid'}).set_table_styles([{'selector': 'th', 'props': [('font-size', '16px')]}]))
 
+# Function to fetch YTD stock price data and normalize it
+def fetch_normalize_stock_data(symbol):
+    today = datetime.today().strftime('%Y-%m-%d')
+    start_of_year = datetime.today().replace(month=1, day=1).strftime('%Y-%m-%d')
+    stock = yf.Ticker(symbol)
+    df = stock.history(start=start_of_year, end=today)
+    # Normalize to 100 at the starting point
+    normalized_df = (df['Close'] / df['Close'].iloc[0]) * 100
+    return normalized_df
+
+# Fetch and plot data if at least one stock has been entered
+if stock_data:
+    plt.figure(figsize=(10, 6))
+    for symbol in stock_symbols:
+        normalized_prices = fetch_normalize_stock_data(symbol)
+        plt.plot(normalized_prices, label=symbol)
+
+    plt.title("YTD Stock Price Comparison, Normalized to 100")
+    plt.xlabel("Date")
+    plt.ylabel("Normalized Price")
+    plt.legend()
+    st.pyplot(plt)
