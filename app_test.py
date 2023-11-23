@@ -31,7 +31,7 @@ sample_data = sample_stock.info
 all_data_points = [format_camel_case(point) for point in sample_data.keys()]
 
 # Multiselect dropdown for choosing data points
-selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap'])
+selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap', 'Sector', 'Dividend Rate', 'Dividend Yield', 'Payout Ratio', 'Volume', 'Currency', 'Price To Book'])
 
 # Function to add more stocks
 def add_stock():
@@ -62,3 +62,4 @@ if stock_data:
 
     # Styling the DataFrame
     st.write(comparison_df.style.set_properties(**{'border-color': 'black', 'border-width': '1px', 'border-style': 'solid'}).set_table_styles([{'selector': 'th', 'props': [('font-size', '16px')]}]))
+
