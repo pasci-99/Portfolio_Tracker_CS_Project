@@ -17,7 +17,7 @@ def get_stock_data(symbol, interval='1d'):
 st.title("Stock Price Viewer")
 
 # Sidebar for user input
-symbol = st.sidebar.text_input("Enter Stock Symbol (e.g., AAPL):", "AAPL")
+symbol = st.sidebar.selectbox("Enter Stock Symbol (e.g., AAPL):", "AAPL")
 interval = st.sidebar.selectbox("Select Time Interval:", ["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"])
 
 # Fetch and display stock data
