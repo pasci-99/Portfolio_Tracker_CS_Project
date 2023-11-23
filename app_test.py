@@ -12,6 +12,17 @@ def fetch_stock_data(symbol):
     stock = yf.Ticker(symbol)
     return stock.info
 
+# Function to get the original key from formatted name
+def get_original_key(formatted_name, sample_data):
+    for key in sample_data.keys():
+        if format_camel_case(key) == formatted_name:
+            return key
+    return None
+
+# Initialize session state for stock symbols
+if 'num_stocks' not in st.session_state:
+    st.session_state['num_stocks'] = 2  # Start with 2 stocks
+
 # Fetch data for a sample stock to get all data points
 sample_stock = yf.Ticker('AAPL')
 sample_data = sample_stock.info
@@ -22,32 +33,29 @@ all_data_points = [format_camel_case(point) for point in sample_data.keys()]
 # Multiselect dropdown for choosing data points
 selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap'])
 
-# Function to get the original key from formatted name
-def get_original_key(formatted_name):
-    for key in sample_data.keys():
-        if format_camel_case(key) == formatted_name:
-            return key
-    return None
+# Function to add more stocks
+def add_stock():
+    st.session_state['num_stocks'] += 1
 
-# Using columns for input fields
-col1, col2 = st.columns(2)
-with col1:
-    stock1 = st.text_input('First Stock Symbol', 'AAPL')
-with col2:
-    stock2 = st.text_input('Second Stock Symbol', 'NVDA')
+# Button to add more stocks
+st.button('Add another stock', on_click=add_stock)
+
+# Create input fields dynamically based on the number of stocks
+stock_symbols = []
+for i in range(st.session_state['num_stocks']):
+    symbol = st.text_input(f'Stock Symbol {i + 1}', key=f'stock_{i}')
+    if symbol:
+        stock_symbols.append(symbol)
 
 # Fetch data for entered symbols
-data_stock1 = fetch_stock_data(stock1) if stock1 else None
-data_stock2 = fetch_stock_data(stock2) if stock2 else None
+stock_data = [fetch_stock_data(symbol) for symbol in stock_symbols if symbol]
 
-# Only proceed if both stocks have been entered
-if data_stock1 and data_stock2:
+# Only proceed if at least two stocks have been entered
+if len(stock_data) >= 2:
     # Adjust the data fetching to use the original keys
-    comparison_data = {
-        'Data Point': selected_data_points,
-        stock1: [data_stock1.get(get_original_key(point)) for point in selected_data_points],
-        stock2: [data_stock2.get(get_original_key(point)) for point in selected_data_points]
-    }
+    comparison_data = {'Data Point': selected_data_points}
+    for symbol, data in zip(stock_symbols, stock_data):
+        comparison_data[symbol] = [data.get(get_original_key(point, sample_data)) for point in selected_data_points]
 
     # Create the DataFrame
     comparison_df = pd.DataFrame(comparison_data)
