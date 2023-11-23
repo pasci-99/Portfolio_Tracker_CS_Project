@@ -1,33 +1,44 @@
 import streamlit as st
 import yfinance as yf
-import pandas as pd
 
-
-st.write("Hooray, we connected everything")
-
-st.write("Test")
-
-# Function to get a list of available stock symbols
-def get_stock_symbols():
-    # Fetch a list of all stock symbols
-    all_stock_info = yf.Tickers("AAPL").tickers
-    stock_symbols = [info.info['symbol'] for info in all_stock_info]
-    return stock_symbols
+# Function to get stock suggestions based on user input
+def get_stock_suggestions(query):
+    suggestions = yf.Ticker(query).suggestions
+    return [s['symbol'] for s in suggestions]
 
 # Streamlit app
-st.title("Stock Selection App")
+def main():
+    st.title("Stock Comparison App")
 
-# Get the list of available stock symbols
-all_stock_symbols = get_stock_symbols()
+    # User input for the first stock
+    stock1 = st.text_input("Enter the first stock symbol:", "").upper()
+    stock1_suggestions = get_stock_suggestions(stock1)
 
-# Create a text input for stock symbol
-entered_symbol = st.text_input("Enter Stock Symbol (e.g., AAPL):").upper()
+    # Display suggestions for the first stock
+    if stock1_suggestions:
+        st.write("Suggestions for the first stock:", stock1_suggestions)
 
-# Filter potential stock suggestions based on entered characters
-filtered_symbols = [symbol for symbol in all_stock_symbols if entered_symbol in symbol]
+    # User input for the second stock
+    stock2 = st.text_input("Enter the second stock symbol:", "").upper()
+    stock2_suggestions = get_stock_suggestions(stock2)
 
-# Display the potential stock suggestions in a multiselect widget
-selected_symbols = st.multiselect("Select from Potential Stocks:", filtered_symbols)
+    # Display suggestions for the second stock
+    if stock2_suggestions:
+        st.write("Suggestions for the second stock:", stock2_suggestions)
 
-# Display the selected stock symbols
-st.write("Selected Stocks:", selected_symbols)
+    # Compare stocks when the user submits
+    if st.button("Compare Stocks"):
+        if stock1 and stock2:
+            # Fetch stock data
+            data1 = yf.download(stock1, start="2022-01-01", end="2023-01-01")
+            data2 = yf.download(stock2, start="2022-01-01", end="2023-01-01")
+
+            # Display stock data or any other desired comparison
+            st.write("Stock 1 data:")
+            st.write(data1)
+
+            st.write("Stock 2 data:")
+            st.write(data2)
+
+if __name__ == "__main__":
+    main()
