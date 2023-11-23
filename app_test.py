@@ -19,14 +19,20 @@ data_stock1 = fetch_stock_data(stock1)
 data_stock2 = fetch_stock_data(stock2)
 
 
-import yfinance as yf
+import pandas as pd
 
-# Function to fetch stock data
-def fetch_stock_data(symbol):
-    stock = yf.Ticker(symbol)
-    return stock.info
+# Data points to compare
+data_points = ['currentPrice', 'marketCap', 'dividendRate', 'dividendYield']
 
-# Fetch data for entered symbols
-data_stock1 = fetch_stock_data(stock1)
-data_stock2 = fetch_stock_data(stock2)
+# Creating a DataFrame for the comparison table
+comparison_data = {
+    'Data Point': data_points,
+    stock1: [data_stock1.get(point) for point in data_points],
+    stock2: [data_stock2.get(point) for point in data_points]
+}
+
+comparison_df = pd.DataFrame(comparison_data)
+
+# Display the DataFrame as a table in Streamlit
+st.table(comparison_df)
 
