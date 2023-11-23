@@ -21,7 +21,7 @@ def get_original_key(formatted_name, sample_data):
 
 # Initialize session state for stock symbols
 if 'num_stocks' not in st.session_state:
-    st.session_state['num_stocks'] = 2  # Start with 2 stocks
+    st.session_state['num_stocks'] = 1  # Start with 1 stock
 
 # Fetch data for a sample stock to get all data points
 sample_stock = yf.Ticker('AAPL')
@@ -31,7 +31,7 @@ sample_data = sample_stock.info
 all_data_points = [format_camel_case(point) for point in sample_data.keys()]
 
 # Multiselect dropdown for choosing data points
-selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap', 'Sector', 'Dividend Rate', 'Dividend Yield', 'Payout Ratio', 'Volume', 'Currency', 'Price To Book'])
+selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap'])
 
 # Function to add more stocks
 def add_stock():
@@ -50,8 +50,8 @@ for i in range(st.session_state['num_stocks']):
 # Fetch data for entered symbols
 stock_data = [fetch_stock_data(symbol) for symbol in stock_symbols if symbol]
 
-# Only proceed if at least two stocks have been entered
-if len(stock_data) >= 2:
+# Only proceed if at least one stock has been entered
+if stock_data:
     # Adjust the data fetching to use the original keys
     comparison_data = {'Data Point': selected_data_points}
     for symbol, data in zip(stock_symbols, stock_data):
