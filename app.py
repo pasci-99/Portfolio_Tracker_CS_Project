@@ -12,5 +12,5 @@ ticker = yf.Ticker(stock_symbol)
 # get the wanted data from the ticker
 current_price = ticker.info['ask']
 market_cap = ticker.info['marketCap']
-print(f"The current price of {stock_symbol} is: ${current_price}")
-print(f"The current price of {stock_symbol} is: ${market_cap}")
+st.write(f"The current price of {stock_symbol} is: ${current_price}")
+st.write(f"The current price of {stock_symbol} is: ${market_cap}")
