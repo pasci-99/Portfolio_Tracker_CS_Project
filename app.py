@@ -1,44 +1,29 @@
 import streamlit as st
 import yfinance as yf
+import pandas as pd
 
-# Function to get stock suggestions based on user input
-def get_stock_suggestions(query):
-    suggestions = yf.Ticker(query).suggestions
-    return [s['symbol'] for s in suggestions]
+
+st.write("Hooray, we connected everything")
+
+st.write("Test")
+
+
+
+# Function to fetch stock data using yfinance
+def get_stock_data(symbol, interval='1d'):
+    stock = yf.Ticker(symbol)
+    data = stock.history(period=interval)
+    return data
 
 # Streamlit app
-def main():
-    st.title("Stock Comparison App")
+st.title("Stock Price Viewer")
 
-    # User input for the first stock
-    stock1 = st.text_input("Enter the first stock symbol:", "").upper()
-    stock1_suggestions = get_stock_suggestions(stock1)
+# Sidebar for user input
+symbol = st.sidebar.text_input("Enter Stock Symbol (e.g., AAPL):", "AAPL")
+interval = st.sidebar.selectbox("Select Time Interval:", ["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"])
 
-    # Display suggestions for the first stock
-    if stock1_suggestions:
-        st.write("Suggestions for the first stock:", stock1_suggestions)
-
-    # User input for the second stock
-    stock2 = st.text_input("Enter the second stock symbol:", "").upper()
-    stock2_suggestions = get_stock_suggestions(stock2)
-
-    # Display suggestions for the second stock
-    if stock2_suggestions:
-        st.write("Suggestions for the second stock:", stock2_suggestions)
-
-    # Compare stocks when the user submits
-    if st.button("Compare Stocks"):
-        if stock1 and stock2:
-            # Fetch stock data
-            data1 = yf.download(stock1, start="2022-01-01", end="2023-01-01")
-            data2 = yf.download(stock2, start="2022-01-01", end="2023-01-01")
-
-            # Display stock data or any other desired comparison
-            st.write("Stock 1 data:")
-            st.write(data1)
-
-            st.write("Stock 2 data:")
-            st.write(data2)
-
-if __name__ == "__main__":
-    main()
+# Fetch and display stock data
+stock_data = get_stock_data(symbol, interval)
+if stock_data is not None:
+    st.write(f"Stock Price Data for {symbol}")
+    st.line_chart(stock_data['Close'])
