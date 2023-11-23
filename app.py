@@ -1,8 +1,7 @@
-pip install yfinance
-
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+
 
 st.write("Hooray, we connected everything")
 
