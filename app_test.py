@@ -53,6 +53,4 @@ if data_stock1 and data_stock2:
     comparison_df = pd.DataFrame(comparison_data)
 
     # Styling the DataFrame
-    st.write(comparison_df.style.set_properties(**{'background-color': 'white', 'border-color': 'black', 'border-width': '1px', 'border-style': 'solid'}))
-
-# Alternatively, use st.table(comparison_df) for a simpler table without custom styling
+    st.write(comparison_df.style.set_properties(**{'border-color': 'black', 'border-width': '1px', 'border-style': 'solid'}).set_table_styles([{'selector': 'th', 'props': [('font-size', '16px')]}]))
