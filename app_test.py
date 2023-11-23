@@ -29,9 +29,12 @@ def get_original_key(formatted_name):
             return key
     return None
 
-# Input fields for stock symbols
-stock1 = st.text_input('Enter first stock symbol', 'AAPL')
-stock2 = st.text_input('Enter second stock symbol', 'NVDA')
+# Using columns for input fields
+col1, col2 = st.columns(2)
+with col1:
+    stock1 = st.text_input('First Stock Symbol', 'AAPL')
+with col2:
+    stock2 = st.text_input('Second Stock Symbol', 'NVDA')
 
 # Fetch data for entered symbols
 data_stock1 = fetch_stock_data(stock1) if stock1 else None
@@ -46,6 +49,10 @@ if data_stock1 and data_stock2:
         stock2: [data_stock2.get(get_original_key(point)) for point in selected_data_points]
     }
 
-    # Create and display the DataFrame
+    # Create the DataFrame
     comparison_df = pd.DataFrame(comparison_data)
-    st.table(comparison_df)
+
+    # Styling the DataFrame
+    st.write(comparison_df.style.set_properties(**{'background-color': 'white', 'border-color': 'black', 'border-width': '1px', 'border-style': 'solid'}))
+
+# Alternatively, use st.table(comparison_df) for a simpler table without custom styling
