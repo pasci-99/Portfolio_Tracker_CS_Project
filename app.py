@@ -12,6 +12,7 @@ ticker = yf.Ticker(stock_symbol)
 # get the wanted data from the ticker
 current_price = ticker.info['ask']
 market_cap = ticker.info['marketCap']
-st.table
+dividend_rate = ticker.info['dividendRate']
 st.write(f"The current price of {stock_symbol} is: ${current_price}")
-st.write(f"The current price of {stock_symbol} is: ${market_cap}")
+st.write(f"The current Market cap of {stock_symbol} is: ${market_cap}")
+st.write(f"The Dividend Rate of {stock_symbol} is: ${dividend_rate}")
