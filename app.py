@@ -8,7 +8,9 @@ if 'portfolio' not in st.session_state:
 # Function to add a new stock to the portfolio
 def add_stock(stock_name, quantity):
     new_entry = {'Stock': stock_name, 'Quantity': quantity}
-    st.session_state['portfolio'] = st.session_state['portfolio'].append(new_entry, ignore_index=True)
+    # Update the DataFrame and then reassign it to the session state
+    updated_portfolio = st.session_state['portfolio'].append(new_entry, ignore_index=True)
+    st.session_state['portfolio'] = updated_portfolio
 
 # Streamlit application layout
 st.title('Portfolio Tracker')
