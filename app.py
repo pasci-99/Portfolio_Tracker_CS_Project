@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Initialize an empty DataFrame to store portfolio data
 if 'portfolio' not in st.session_state:
@@ -7,10 +8,17 @@ if 'portfolio' not in st.session_state:
 
 # Function to add a new stock to the portfolio
 def add_stock(stock_name, quantity):
-    new_entry = {'Stock': stock_name, 'Quantity': quantity}
-    # Update the DataFrame and then reassign it to the session state
-    updated_portfolio = st.session_state['portfolio'].append(new_entry, ignore_index=True)
-    st.session_state['portfolio'] = updated_portfolio
+    new_entry = pd.DataFrame({'Stock': [stock_name], 'Quantity': [quantity]})
+    st.session_state['portfolio'] = pd.concat([st.session_state['portfolio'], new_entry], ignore_index=True)
+
+# Function to plot the portfolio
+def plot_portfolio():
+    if not st.session_state['portfolio'].empty:
+        fig, ax = plt.subplots()
+        st.session_state['portfolio'].groupby('Stock')['Quantity'].sum().plot(kind='bar', ax=ax)
+        ax.set_title('Portfolio Distribution')
+        ax.set_ylabel('Quantity')
+        st.pyplot(fig)
 
 # Streamlit application layout
 st.title('Portfolio Tracker')
@@ -23,4 +31,6 @@ with st.form("add_stock_form"):
         add_stock(stock_name, quantity)
 
 st.write("Your Portfolio:")
-st.write(st.session_state['portfolio'])
+st.dataframe(st.session_state['portfolio'])
+
+plot_portfolio()
