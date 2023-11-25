@@ -1,19 +1,24 @@
 import streamlit as st
-import yfinance as yf
 import pandas as pd
 
+# Initialize an empty DataFrame to store portfolio data
+if 'portfolio' not in st.session_state:
+    st.session_state['portfolio'] = pd.DataFrame(columns=['Stock', 'Quantity'])
 
+# Function to add a new stock to the portfolio
+def add_stock(stock_name, quantity):
+    new_entry = {'Stock': stock_name, 'Quantity': quantity}
+    st.session_state['portfolio'] = st.session_state['portfolio'].append(new_entry, ignore_index=True)
 
-# enter andd create a stock symbol 
-stock_symbol = st.sidebar.text_input("Enter Stock Symbol (e.g., AAPL):", "AAPL")
+# Streamlit application layout
+st.title('Portfolio Tracker')
 
-# create the ticker with the symbol
-ticker = yf.Ticker(stock_symbol)
+with st.form("add_stock_form"):
+    stock_name = st.text_input("Stock Symbol")
+    quantity = st.number_input("Quantity", min_value=0.0, format='%f')
+    submitted = st.form_submit_button("Add to Portfolio")
+    if submitted:
+        add_stock(stock_name, quantity)
 
-# get the wanted data from the ticker
-current_price = ticker.info['ask']
-market_cap = ticker.info['marketCap']
-dividend_rate = ticker.info['dividendRate']
-st.write(f"The current price of {stock_symbol} is: ${current_price}")
-st.write(f"The current Market cap of {stock_symbol} is: ${market_cap}")
-st.write(f"The Dividend Rate of {stock_symbol} is: ${dividend_rate}")
+st.write("Your Portfolio:")
+st.write(st.session_state['portfolio'])
