@@ -24,13 +24,23 @@ def plot_performance():
             stock = yf.Ticker(row['Stock'])
             hist_data = stock.history(start=min_date, end=max_date)
             hist_data['Return'] = hist_data['Close'] * row['Quantity']
-            portfolio_performance = portfolio_performance.add(hist_data['Return'], fill_value=0)
 
-        fig, ax = plt.subplots()
-        portfolio_performance.plot(ax=ax)
-        ax.set_title('Portfolio Performance Over Time')
-        ax.set_ylabel('Value')
-        st.pyplot(fig)
+            # Preparing the DataFrame for addition
+            if portfolio_performance.empty:
+                portfolio_performance = hist_data[['Return']]
+            else:
+                portfolio_performance = portfolio_performance.join(hist_data[['Return']], how='outer', rsuffix='_other')
+                portfolio_performance['Return'] = portfolio_performance['Return'].fillna(0) + portfolio_performance['Return_other'].fillna(0)
+                portfolio_performance.drop(columns=['Return_other'], inplace=True)
+
+        # Plotting
+        if not portfolio_performance.empty:
+            fig, ax = plt.subplots()
+            portfolio_performance['Return'].plot(ax=ax)
+            ax.set_title('Portfolio Performance Over Time')
+            ax.set_ylabel('Value')
+            st.pyplot(fig)
+
 
 # Streamlit application layout
 st.title('Portfolio Tracker')
