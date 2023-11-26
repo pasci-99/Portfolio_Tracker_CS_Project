@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 
 # Hardcoded API key (replace 'YOUR_API_KEY' with your actual API key)
-api_key = 'YOUR_API_KEY'
+api_key = ZLEMYDXGU0STLRL1
 
 # Function to fetch stock data
 def get_stock_data(symbol, api_key):
