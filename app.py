@@ -7,7 +7,7 @@ api_key = 'ZLEMYDXGU0STLRL1'
 ts = TimeSeries(key=api_key, output_format='pandas')
 
 # Streamlit app layout
-st.title("Stock Holdings Value Tracker")
+st.title("Stock Holdings Value Trackerz")
 
 # Use a session state to store the holdings
 if 'holdings' not in st.session_state:
