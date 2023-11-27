@@ -51,7 +51,7 @@ if st.button("Update Portfolio"):
     total_values = None
     for holding in st.session_state['holdings']:
         # meta_data probably not needed, can still be deleted and outputsize can maybe be adjusted to 'compact' if full length is not needed for a certain holding.
-        data = ts.get_daily(symbol=holding['symbol'], outputsize='full')
+        data, meta_data = ts.get_daily(symbol=holding['symbol'], outputsize='full')
         data_filtered = data[data.index >= holding['purchase_date'].strftime('%Y-%m-%d')]
         data_filtered['Holdings Value'] = data_filtered['4. close'] * holding['amount']
         if total_values is None:
