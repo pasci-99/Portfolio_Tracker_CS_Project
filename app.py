@@ -8,23 +8,26 @@ api_key = ZLEMYDXGU0STLRL1
 ts = TimeSeries(key=api_key, output_format='pandas')
 
 # Streamlit app layout
-st.title("Stock Data Fetcher")
+st.title("Stock Holdings Value Tracker")
 
 # User inputs
 symbol = st.text_input("Enter Stock Symbol", "AAPL")
-start_date = st.date_input("Select Start Date")
-start_time = st.time_input("Select Start Time")
-amount = st.number_input("Enter the Amount of Stocks Purchased")
-
-# Combining date and time into a single datetime object
-start_datetime = datetime.combine(start_date, start_time)
+amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0.1, step=0.1, format='%f')
+purchase_date = st.date_input("Select Purchase Date")
+purchase_price = st.number_input("Enter Purchase Price per Share", min_value=0.1, step=0.1, format='%f')
 
 # Fetching data when 'Fetch Data' button is clicked
 if st.button("Fetch Data"):
     data, meta_data = ts.get_daily(symbol=symbol, outputsize='full')
-    
-    # Filter data based on the start_datetime
-    data_filtered = data[data.index >= start_datetime]
-    
-    # Display data
+
+    # Filter data based on the purchase date
+    data_filtered = data[data.index >= purchase_date.strftime('%Y-%m-%d')]
+
+    # Calculate holdings value
+    data_filtered['Holdings Value'] = data_filtered['4. close'] * amount_of_shares
+
+    # Display data as a line chart
+    st.line_chart(data_filtered['Holdings Value'])
+
+    # Display the data in a table format
     st.write(data_filtered)
