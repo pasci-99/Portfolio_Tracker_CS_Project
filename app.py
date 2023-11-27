@@ -52,8 +52,11 @@ if st.button("Update Portfolio"):
     for holding in st.session_state['holdings']:
         # meta_data probably not needed, can still be deleted and outputsize can maybe be adjusted to 'compact' if full length is not needed for a certain holding.
         data, meta_data = ts.get_daily(symbol=holding['symbol'], outputsize='full')
+
+        # make only dates after the insertet purchasing date True to filter afterwards
         data_filtered = data[data.index >= holding['purchase_date'].strftime('%Y-%m-%d')]
         data_filtered['Holdings Value'] = data_filtered['4. close'] * holding['amount']
+       # Needed Help from ChatGPT, thought it would be possible to just do somethin like total_values += data_fil...
         if total_values is None:
             total_values = data_filtered[['Holdings Value']]
         else:
@@ -66,3 +69,36 @@ if st.button("Update Portfolio"):
 
         # Display the data in a table format
         st.write(total_values)
+
+#### This part is for the Piechart visualization
+
+import matplotlib.pyplot as plt
+
+# Fetch most recent data and calculate current values
+current_values = {}
+total_portfolio_value = 0
+for holding in st.session_state['holdings']:
+    data, _ = ts.get_daily(symbol=holding['symbol'], outputsize='compact')
+    most_recent_close = data['4. close'].iloc[-1]  # Get the most recent closing price
+    current_value = most_recent_close * holding['amount']
+    current_values[holding['symbol']] = current_value
+    total_portfolio_value += current_value
+
+# Only proceed if the total portfolio value is non-zero
+if total_portfolio_value > 0:
+    # Labels and sizes for the pie chart
+    labels = current_values.keys()
+    sizes = current_values.values()
+
+    # Create the pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.axis('equal')  # Equal aspect ratio for a circular pie chart
+    plt.title('Portfolio Composition')
+
+    # Display the pie chart in Streamlit
+    st.pyplot(plt)
+else:
+    st.write("No holdings to display.")
+
+# Rest of your Streamlit app code...
