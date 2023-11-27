@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 
 # API Key, maybe it has to be adjusted to be more secure
-api_key = ZLEMYDXGU0STLRL1
+api_key = 'ZLEMYDXGU0STLRL1'
 ts = TimeSeries(key=api_key, output_format='pandas')
 
 # Streamlit app layout
