@@ -1,19 +1,23 @@
+# import all needed libraries
 import streamlit as st
 from alpha_vantage.timeseries import TimeSeries
 from datetime import datetime
 
-# API Key
+# API Key (maybe make it more secure, not sure yet how to do it)
 api_key = 'ZLEMYDXGU0STLRL1'
 ts = TimeSeries(key=api_key, output_format='pandas')
 
 # Streamlit app layout
-st.title("Stock Holdings Value Trackerz")
+#Title
+st.title("Stock Holdings Value Tracker")
 
-# Use a session state to store the holdings
+
+# Use a session state to store the holdings. This is needed, that the user doesn't lose the inserted information when rerunning the app (clicking a button).
+# Using an if clause because only needed if holdings is not existing already
 if 'holdings' not in st.session_state:
     st.session_state['holdings'] = []
 
-# Function to add a holding
+# Function to add a holding (Ticker, Amount, Date, Price)
 def add_holding():
     st.session_state['holdings'].append({
         'symbol': symbol,
@@ -22,31 +26,32 @@ def add_holding():
         'purchase_price': purchase_price
     })
 
-# Function to delete a holding
+# Function to delete an adde holding from the holdings using the pop function
 def delete_holding(index):
     st.session_state['holdings'].pop(index)
 
-# User input to add a new holding
+# User interface to add a new holding
 with st.form("Add Holding"):
     symbol = st.text_input("Enter Stock Symbol", "AAPL")
-    amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0.1)
+    amount_of_shares = st.number_input("Enter the Number of Shares")
     purchase_date = st.date_input("Select Purchase Date")
-    purchase_price = st.number_input("Enter Purchase Price per Share", min_value=0.1)
+    purchase_price = st.number_input("Enter Purchase Price per Share")
     submitted = st.form_submit_button("Add Holding")
     if submitted:
         add_holding()
 
-# Display current holdings and option to delete
+# Display current holdings with the option to delete holdings
 for index, holding in enumerate(st.session_state['holdings']):
     st.write(f"Holding {index + 1}: {holding['symbol']} - {holding['amount']} shares")
     if st.button(f"Delete Holding {index + 1}"):
         delete_holding(index)
 
 # Fetch and aggregate data when 'Fetch Data' button is clicked
-if st.button("Fetch Data"):
+if st.button("Update Portfolio"):
     total_values = None
     for holding in st.session_state['holdings']:
-        data, meta_data = ts.get_daily(symbol=holding['symbol'], outputsize='full')
+        # meta_data probably not needed, can still be deleted and outputsize can maybe be adjusted to 'compact' if full length is not needed for a certain holding.
+        data = ts.get_daily(symbol=holding['symbol'], outputsize='full')
         data_filtered = data[data.index >= holding['purchase_date'].strftime('%Y-%m-%d')]
         data_filtered['Holdings Value'] = data_filtered['4. close'] * holding['amount']
         if total_values is None:
