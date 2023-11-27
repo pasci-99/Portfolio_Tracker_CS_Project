@@ -12,9 +12,9 @@ st.title("Stock Holdings Value Tracker")
 
 # User inputs
 symbol = st.text_input("Enter Stock Symbol", "AAPL")
-amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0.1, step=0.1, format='%f')
+amount_of_shares = st.number_input("Enter the Number of Shares")
 purchase_date = st.date_input("Select Purchase Date")
-purchase_price = st.number_input("Enter Purchase Price per Share", min_value=0.1, step=0.1, format='%f')
+purchase_price = st.number_input("Enter Purchase Price per Share")
 
 # Fetching data when 'Fetch Data' button is clicked
 if st.button("Fetch Data"):
