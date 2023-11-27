@@ -3,3 +3,4 @@ yfinance
 pandas
 matplotlib
 alpha_vantage
+alpha_vantage
