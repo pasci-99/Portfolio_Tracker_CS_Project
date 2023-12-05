@@ -1,5 +1,6 @@
 # import all needed libraries
 import streamlit as st
+import streamlit_authenticator as stauth
 from alpha_vantage.timeseries import TimeSeries
 from datetime import datetime
 
@@ -10,6 +11,30 @@ ts = TimeSeries(key=api_key, output_format='pandas')
 # Streamlit app layout
 #Title
 st.title("Stock Holdings Value Tracker")
+
+# User definition
+users = {
+    "Magdalena": "Test1",
+    "Peter": "Test2"
+    # More users possible here
+}
+
+# Login UI
+username = st.sidebar.text_input("Username")
+password = st.sidebar.text_input("Password", type='password')
+
+# Function to verify credentials
+def check_credentials(username, password):
+    return username in users and users[username] == password
+
+# Verify and display app content
+if st.sidebar.button("Login"):
+    if check_credentials(username, password):
+        st.success("Logged in as {}".format(username))
+        # Place your main app code here
+    else:
+        st.error("Incorrect username or password")
+
 
 
 # Use a session state to store the holdings. This is needed, that the user doesn't lose the inserted information when rerunning the app (clicking a button).
