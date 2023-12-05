@@ -1,6 +1,5 @@
 # import all needed libraries
 import streamlit as st
-import streamlit_authenticator as stauth
 from alpha_vantage.timeseries import TimeSeries
 from datetime import datetime
 
@@ -27,11 +26,10 @@ password = st.sidebar.text_input("Password", type='password')
 def check_credentials(username, password):
     return username in users and users[username] == password
 
-# Verify and display app content
+# Verify users
 if st.sidebar.button("Login"):
     if check_credentials(username, password):
         st.success("Logged in as {}".format(username))
-        # Place your main app code here
     else:
         st.error("Incorrect username or password")
 
