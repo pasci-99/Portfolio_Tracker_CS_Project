@@ -76,22 +76,14 @@ if st.button("Update Portfolio"):
         # Sum across columns to get the total portfolio value
         total_values['Total Value'] = total_values.sum(axis=1)
         
+        # Format the index to display only year, month, and day
+        total_values.index = total_values.index.date
         # Rename the index to 'Date' for clarity
         total_values.index.name = 'Date'
-        
-        # Convert the index to a column to display 'Date' in the table
-        total_values.reset_index(inplace=True)
-        
-        # Format the index to display only year, month, and day
-        total_values['Date'] = total_values['Date'].dt.date
-        
-        # Round the numeric columns to two decimal places
-        total_values = total_values.round(2)
-        
-        # Display data as a line chart
-        st.line_chart(total_values.set_index('Date')['Total Value'])
-        
-        # Display the data in a table format
-        st.dataframe(total_values, width=700, height=300)
 
+        # Display data as a line chart
+        st.line_chart(total_values['Total Value'])
+
+        # Display the data in a table format without the index
+        st.dataframe(total_values, width=700, height=300, index=False)
 
