@@ -2,61 +2,81 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 
-# Initialize session state for storing portfolio
-if 'portfolio' not in st.session_state:
-    st.session_state['portfolio'] = []
+# Streamlit app layout
+#Title
+st.title("Stock Holdings Value Tracker")
 
-# Function to store input data as a holding dictionary and append to session state portfolio
-def add_holding(symbol, number_of_shares, purchase_date):
-    holding = {
+# User definition
+users = {
+    "Magdalena": "Test1",
+    "Peter": "Test2"
+    # More users possible here
+}
+
+# Login UI
+username = st.sidebar.text_input("Username")
+password = st.sidebar.text_input("Password", type='password')
+
+# Function to verify credentials
+def check_credentials(username, password):
+    return username in users and users[username] == password
+
+# Verify users
+if st.sidebar.button("Login"):
+    if check_credentials(username, password):
+        st.success("Logged in as {}".format(username))
+    else:
+        st.error("Incorrect username or password")
+
+# Initialize holdings
+if 'holdings' not in st.session_state:
+    st.session_state['holdings'] = []
+
+# Function to add a holding
+def add_holding():
+    st.session_state['holdings'].append({
         'symbol': symbol,
-        'shares': number_of_shares,
-        'purchase_date': str(purchase_date)
-    }
-    st.session_state['portfolio'].append(holding)
+        'amount': amount_of_shares,
+        'purchase_date': purchase_date,
+        'purchase_price': purchase_price
+    })
 
-# Form for adding holdings
+# Function to delete a holding
+def delete_holding(index):
+    st.session_state['holdings'].pop(index)
+
+# User interface to add a new holding
 with st.form("Add Holding"):
     symbol = st.text_input("Enter Stock Symbol", "AAPL")
-    number_of_shares = st.number_input("Enter the Number of Shares", min_value=0)
+    amount_of_shares = st.number_input("Enter the Number of Shares")
     purchase_date = st.date_input("Select Purchase Date")
+    purchase_price = st.number_input("Enter Purchase Price per Share")
     submitted = st.form_submit_button("Add Holding")
-
     if submitted:
-        add_holding(symbol, number_of_shares, purchase_date)
+        add_holding()
 
-# Display current portfolio with option to delete each holding
-st.write("Current Portfolio:")
-for i, holding in enumerate(st.session_state['portfolio']):
-    st.text(f"{holding['symbol']} - {holding['shares']} shares - Purchased on: {holding['purchase_date']}")
-    if st.button("Delete", key=f"delete_{i}"):
-        del st.session_state['portfolio'][i]
-        st.experimental_rerun()
+# Display current holdings
+for index, holding in enumerate(st.session_state['holdings']):
+    st.write(f"Holding {index + 1}: {holding['symbol']} - {holding['amount']} shares")
+    if st.button(f"Delete Holding {index + 1}", key=f"delete_{index}"):
+        delete_holding(index)
 
-# Function to fetch stock data
-def fetch_stock_data(symbol, start_date):
-    stock = yf.Ticker(symbol)
-    hist = stock.history(start=start_date)
-    return hist['Close']
+# Fetch data and calculate portfolio value
+if st.button("Update Portfolio"):
+    total_values = None
+    for holding in st.session_state['holdings']:
+        stock = yf.Ticker(holding['symbol'])
+        data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
+        data['Holdings Value'] = data['Close'] * holding['amount']
+        if total_values is None:
+            total_values = data[['Holdings Value']]
+        else:
+            total_values = total_values.join(data[['Holdings Value']], how='outer', rsuffix='_other')
+            total_values['Holdings Value'] = total_values.sum(axis=1)
 
-# Function to calculate portfolio value
-def calculate_portfolio_value(portfolio):
-    if not portfolio:
-        return pd.DataFrame()  # Return empty DataFrame if portfolio is empty
+    # Display data as a line chart
+    if total_values is not None:
+        st.line_chart(total_values['Holdings Value'])
 
-    earliest_date = min([pd.to_datetime(holding['purchase_date']) for holding in portfolio])
-    portfolio_values = pd.DataFrame(index=pd.date_range(start=earliest_date, end=pd.Timestamp('today')))
-
-    for holding in portfolio:
-        stock_data = fetch_stock_data(holding['symbol'], holding['purchase_date'])
-        holding_value = stock_data * holding['shares']
-        holding_value = holding_value.reindex(portfolio_values.index).fillna(0)
-        portfolio_values[holding['symbol']] = holding_value
-
-    portfolio_values['Total Value'] = portfolio_values.sum(axis=1)
-    return portfolio_values
-
-# Calculate and display portfolio value if the portfolio is not empty
-if st.session_state['portfolio']:
-    portfolio_values_df = calculate_portfolio_value(st.session_state['portfolio'])
-    st.line_chart(portfolio_values_df['Total Value'])
+        # Display the data in a table format
+        st.write(total_values)
