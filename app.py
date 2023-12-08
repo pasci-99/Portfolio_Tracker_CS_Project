@@ -2,6 +2,7 @@
 import streamlit as st
 from alpha_vantage.timeseries import TimeSeries
 from datetime import datetime
+import requests
 
 # API Key (maybe make it more secure, not sure yet how to do it)
 api_key = 'ZLEMYDXGU0STLRL1'
@@ -17,6 +18,17 @@ users = {
     "Peter": "Test2"
     # More users possible here
 }
+
+# NewsAPI key
+news_api_key = 'd3e1cfc10e9e472ca85a16f294c9dc78'
+
+# Function to fetch news
+def get_stock_news(symbol):
+    base_url = "https://newsapi.org/v2/everything?"
+    query = f"q={symbol}&apiKey={news_api_key}"
+    response = requests.get(base_url + query)
+    articles = response.json().get('articles', [])
+    return articles[:5]  # Return top 5 articles
 
 # Login UI
 username = st.sidebar.text_input("Username")
@@ -52,6 +64,7 @@ def add_holding():
 # Function to delete an adde holding from the holdings using the pop function
 def delete_holding(index):
     st.session_state['holdings'].pop(index)
+
 
 # User interface to add a new holding
 with st.form("Add Holding"):
@@ -89,6 +102,17 @@ if st.button("Update Portfolio"):
     # Display data as a line chart
     if total_values is not None:
         st.line_chart(total_values['Holdings Value'])
+
+# Display news for the selected stock
+news_symbol = st.sidebar.text_input("Enter Stock Symbol for News")
+if news_symbol:
+        st.sidebar.write(f"Latest News for {news_symbol}:")
+        news_items = get_stock_news(news_symbol)
+        for item in news_items:
+                st.sidebar.write(f"**{item['title']}**")
+                st.sidebar.write(item['description'])
+                st.sidebar.write(f"[Read more]({item['url']})", unsafe_allow_html=True)
+                st.sidebar.write("---")
 
         # Display the data in a table format
         st.write(total_values)
