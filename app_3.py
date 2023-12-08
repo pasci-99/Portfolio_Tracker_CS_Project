@@ -76,13 +76,12 @@ if st.button("Update Portfolio"):
     if not total_values.empty:
         total_values['Total Value'] = total_values.sum(axis=1)
 
+        # Format the index to display only year, month, and day
+        total_values.index = total_values.index.date
+
         # Display data as a line chart
         st.line_chart(total_values['Total Value'])
 
-if not total_values.empty:
-    # Format the index to display only year, month, and date
-    total_values.index = total_values.index.date
-
-    # Display the formatted DataFrame
-    st.dataframe(total_values, width=700, height=300)
+        # Display the data in a table format
+        st.dataframe(total_values, width=700, height=300)
 
