@@ -60,20 +60,24 @@ for index, holding in enumerate(st.session_state['holdings']):
 
 # Fetch data and calculate portfolio value
 if st.button("Update Portfolio"):
-    total_values = None
+    total_values = pd.DataFrame()
     for holding in st.session_state['holdings']:
         stock = yf.Ticker(holding['symbol'])
         data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
-        data['Holdings Value'] = data['Close'] * holding['amount']
-        if total_values is None:
-            total_values = data[['Holdings Value']]
-        else:
-            total_values = total_values.join(data[['Holdings Value']], how='outer', rsuffix='_other')
-            total_values['Holdings Value'] = total_values.sum(axis=1)
+        holding_value = data['Close'] * holding['amount']
+        holding_value.name = holding['symbol']  # Naming the series with the symbol for identification
 
-    # Display data as a line chart
-    if total_values is not None:
-        st.line_chart(total_values['Holdings Value'])
+        if total_values.empty:
+            total_values = holding_value.to_frame()
+        else:
+            total_values = total_values.join(holding_value, how='outer')
+
+    # Sum across columns to get the total portfolio value
+    if not total_values.empty:
+        total_values['Total Value'] = total_values.sum(axis=1)
+
+        # Display data as a line chart
+        st.line_chart(total_values['Total Value'])
 
         # Display the data in a table format
         st.write(total_values)
