@@ -79,7 +79,6 @@ if st.button("Update Portfolio"):
         # Display data as a line chart
         st.line_chart(total_values['Total Value'])
 
-    # Display the data in a table format using st.dataframe
     if not total_values.empty:
-        st.dataframe(total_values, width=700, height=300)
-
+        formatted_values = total_values.round(2)  # Adjust decimal places as needed
+        st.dataframe(formatted_values, width=700, height=300)
