@@ -34,10 +34,15 @@ def calculate_portfolio_value(portfolio):
     for holding in portfolio:
         stock_data = fetch_stock_data(holding['symbol'], earliest_date)
         holding_value = stock_data * holding['shares']
-        holding_value = holding_value.reindex(portfolio_df.index.union(holding_value.index)).fillna(0)
-        portfolio_df = portfolio_df.add(holding_value, fill_value=0)
+        holding_value = holding_value.reindex(portfolio_df.index.union(stock_data.index)).fillna(0)
+        
+        if portfolio_df.empty:
+            portfolio_df = holding_value.to_frame(holding['symbol'])
+        else:
+            portfolio_df = portfolio_df.join(holding_value.to_frame(holding['symbol']), how='outer')
 
-    return portfolio_df
+    portfolio_df.fillna(0, inplace=True)
+    return portfolio_df.sum(axis=1)
 
 # Form for adding holdings
 with st.form("Add Holding"):
