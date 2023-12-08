@@ -3,7 +3,6 @@ import yfinance as yf
 import pandas as pd
 
 # Streamlit app layout
-#Title
 st.title("Stock Holdings Value Tracker")
 
 # User definition
@@ -37,8 +36,7 @@ def add_holding():
     st.session_state['holdings'].append({
         'symbol': symbol,
         'amount': amount_of_shares,
-        'purchase_date': purchase_date,
-        'purchase_price': purchase_price
+        'purchase_date': purchase_date
     })
 
 # Function to delete a holding
@@ -50,7 +48,6 @@ with st.form("Add Holding"):
     symbol = st.text_input("Enter Stock Symbol", "AAPL")
     amount_of_shares = st.number_input("Enter the Number of Shares")
     purchase_date = st.date_input("Select Purchase Date")
-    purchase_price = st.number_input("Enter Purchase Price per Share")
     submitted = st.form_submit_button("Add Holding")
     if submitted:
         add_holding()
