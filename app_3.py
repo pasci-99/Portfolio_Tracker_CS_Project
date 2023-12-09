@@ -2,11 +2,12 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
+from datetime import datetime
 from supabase import create_client, Client
 
 # Initialize Supabase client
 SUPABASE_URL = "https://vzoizgrsdwulmwwopjvq.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6b2l6Z3JzZHd1bG13d29wanZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxMjAwMDAsImV4cCI6MjAxNzY5NjAwMH0.vxL92OsvTj70xV-l-2eyEJl6tf3InETpqB2dVCvL-TQ"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6b2l6Z3JzZHd1bG13d29wanZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxMjAwMDAsImV4cCI6MjAxNzY5NjAwMH0.vxL92OsvTj70xV-l-2eyEJl6tf3InETpqB2dVCvL-TQ" 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Registration Function
@@ -18,19 +19,6 @@ def supabase_register(email, password):
         error_message = user.get('error', {}).get('message', 'Registration failed.')
         return False, error_message
 
-# Sidebar for Registration
-with st.sidebar:
-    with st.expander("Register"):
-        reg_email = st.text_input("Email", key="reg_email")
-        reg_password = st.text_input("Password", type='password', key="reg_password")
-
-        if st.button("Register"):
-            success, message = supabase_register(reg_email, reg_password)
-            if success:
-                st.success(message)
-            else:
-                st.error(message)
-
 # Login Function
 def supabase_login(username, password):
     user = supabase.auth.sign_in(email=username, password=password)
@@ -39,111 +27,95 @@ def supabase_login(username, password):
     else:
         return False, None
 
-# Sidebar for Login
-username = st.sidebar.text_input("Username")
-password = st.sidebar.text_input("Password", type='password')
+# Function to add a holding
+def add_holding(symbol, amount_of_shares, purchase_date):
+    st.session_state['holdings'].append({
+        'symbol': symbol,
+        'amount': amount_of_shares,
+        'purchase_date': purchase_date
+    })
 
-if st.sidebar.button("Login"):
-    login_success, user = supabase_login(username, password)
-    if login_success:
-        st.success(f"Logged in as {user['email']}")
-    else:
-        st.error("Incorrect username or password")
-
-
-
-
+# Function to delete a holding
+def delete_holding(index):
+    st.session_state['holdings'].pop(index)
 
 # Streamlit app layout
 st.title("Stock Holdings Value Tracker")
 
-tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
+# Sidebar for Registration and Login
+with st.sidebar:
+    st.subheader("User Authentication")
 
+    with st.expander("Register"):
+        reg_email = st.text_input("Email", key="reg_email")
+        reg_password = st.text_input("Password", type='password', key="reg_password")
+        if st.button("Register", key="register_button"):
+            success, message = supabase_register(reg_email, reg_password)
+            if success:
+                st.success(message)
+            else:
+                st.error(message)
 
-with tab1:
-    # User definition
-    users = {
-        "Magdalena": "Test1",
-        "Peter": "Test2"
-        # More users possible here
-    }
-
-    # Login UI
-    username = st.sidebar.text_input("Username")
-    password = st.sidebar.text_input("Password", type='password')
-
-    # Function to verify credentials
-    def check_credentials(username, password):
-        return username in users and users[username] == password
-
-    # Verify users
-    if st.sidebar.button("Login"):
-        if check_credentials(username, password):
-            st.success("Logged in as {}".format(username))
+    username = st.text_input("Username", key="login_username")
+    password = st.text_input("Password", type='password', key="login_password")
+    if st.button("Login", key="login_button"):
+        login_success, user = supabase_login(username, password)
+        if login_success:
+            st.session_state['logged_in'] = True
+            st.session_state['user_email'] = user['email']
+            st.success(f"Logged in as {user['email']}")
         else:
             st.error("Incorrect username or password")
 
-    # Initialize holdings
-    if 'holdings' not in st.session_state:
-        st.session_state['holdings'] = []
+# Initialize session state for holdings
+if 'holdings' not in st.session_state:
+    st.session_state['holdings'] = []
 
-    # Function to add a holding
-    def add_holding():
-        st.session_state['holdings'].append({
-            'symbol': symbol,
-            'amount': amount_of_shares,
-            'purchase_date': purchase_date
-        })
+# Initialize session state for logged in status
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
 
-    # Function to delete a holding
-    def delete_holding(index):
-        st.session_state['holdings'].pop(index)
+# Portfolio Tracker Tab
+tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 
-    # User interface to add a new holding
-    with st.form("Add Holding"):
-        symbol = st.text_input("Enter Stock Symbol", "AAPL")
-        amount_of_shares = st.number_input("Enter the Number of Shares")
-        purchase_date = st.date_input("Select Purchase Date")
-        submitted = st.form_submit_button("Add Holding")
-        if submitted:
-            add_holding()
+with tab1:
+    if st.session_state['logged_in']:
+        with st.form("Add Holding"):
+            symbol = st.text_input("Enter Stock Symbol", "AAPL")
+            amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0)
+            purchase_date = st.date_input("Select Purchase Date")
+            submitted = st.form_submit_button("Add Holding")
+            if submitted:
+                add_holding(symbol, amount_of_shares, purchase_date)
 
-    # Display current holdings
-    for index, holding in enumerate(st.session_state['holdings']):
-        st.write(f"Holding {index + 1}: {holding['symbol']} - {holding['amount']} shares")
-        if st.button(f"Delete Holding {index + 1}", key=f"delete_{index}"):
-            delete_holding(index)
+        for index, holding in enumerate(st.session_state['holdings']):
+            st.write(f"Holding {index + 1}: {holding['symbol']} - {holding['amount']} shares")
+            if st.button(f"Delete Holding {index + 1}", key=f"delete_{index}"):
+                delete_holding(index)
 
-    # Fetch data and calculate portfolio value
-    if st.button("Update Portfolio"):
-        total_values = pd.DataFrame()
-        for holding in st.session_state['holdings']:
-            stock = yf.Ticker(holding['symbol'])
-            data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
-            holding_value = data['Close'] * holding['amount']
-            holding_value.name = holding['symbol']  # Naming the series with the symbol for identification
+        if st.button("Update Portfolio"):
+            total_values = pd.DataFrame()
+            for holding in st.session_state['holdings']:
+                stock = yf.Ticker(holding['symbol'])
+                data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
+                holding_value = data['Close'] * holding['amount']
+                holding_value.name = holding['symbol']
 
-            if total_values.empty:
-                total_values = holding_value.to_frame()
-            else:
-                total_values = total_values.join(holding_value, how='outer')
+                if total_values.empty:
+                    total_values = holding_value.to_frame()
+                else:
+                    total_values = total_values.join(holding_value, how='outer')
 
-        # Sum across columns to get the total portfolio value
-        if not total_values.empty:
-            total_values['Total Value'] = total_values.sum(axis=1)
-
-            # Format the index to display only year, month, and day
-            total_values.index = total_values.index.date
-
-            # Display data as a line chart
-            st.line_chart(total_values['Total Value'])
-
-            # Display the data in a table format
-            st.dataframe(total_values, width=700, height=300)
-
-
+            if not total_values.empty:
+                total_values['Total Value'] = total_values.sum(axis=1)
+                total_values.index = total_values.index.date
+                st.line_chart(total_values['Total Value'])
+                st.dataframe(total_values, width=700, height=300)
+    else:
+        st.warning("Please login to access the Portfolio Tracker")
 
 with tab2:
+
         # Function to format camelCase names into a readable format
     def format_camel_case(name):
         formatted_name = ''.join([' ' + char if char.isupper() else char for char in name]).strip()
