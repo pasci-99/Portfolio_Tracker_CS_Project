@@ -11,7 +11,9 @@ st_supabase_client = st.connection(
     key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ",
 )
 
-st.session_state['username'] = ""
+# Initialize the session state variable if not present
+if 'username' not in st.session_state:
+    st.session_state['username'] = ""
 st.title("Oiii " + st.session_state['username'])
 
 
