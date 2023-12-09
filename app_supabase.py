@@ -17,7 +17,12 @@ with st.form("Login"):
         myUserName = st.text_input("Enter your username")
         submitted = st.form_submit_button("Login")
         if submitted:
-            st.write(st_supabase_client.query("*", table="test").eq("username", "jonas").execute().data)
+            response = st_supabase_client.from_("test").select("*").eq("username", myUserName).execute()
+        
+            if response.status_code == 200:
+                st.write(response.data)
+            else:
+                st.error(f"Error: {response.text}")
 
 
 
