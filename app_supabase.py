@@ -12,7 +12,7 @@ st_supabase_client = st.connection(
 )
 
 
-if st.button("Write")
+if st.button('Write'):
     st.write('Hello')
 
 
