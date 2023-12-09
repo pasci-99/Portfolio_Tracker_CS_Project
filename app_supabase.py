@@ -22,26 +22,17 @@ with st.form("Login"):
         submitted = st.form_submit_button("Login")
         if submitted:
             st.session_state['username'] = myUserName
-            
-if st.button("Read"):
-    response = st_supabase_client.query("*", table="test", ttl=0).execute()
-    st.write("Filtered by username:")
-    st.write([obj for obj in response.data if obj.get('username') == myUserName])
 
-if st.button('Write'):
-    st.write(st_supabase_client.table("test").insert(
-    [{"test": "APPL", "username": st.session_state['username']}], count="None"
+if st.session_state['username'] != "":
+    if st.button("Read"):
+        response = st_supabase_client.query("*", table="test", ttl=0).execute()
+        st.write("Filtered by username:")
+        st.write([obj for obj in response.data if obj.get('username') == myUserName])
+
+    if st.button('Write'):
+        st.write(st_supabase_client.table("test").insert(
+        [{"test": "APPL", "username": st.session_state['username']}], count="None"
+
+
+
 ).execute())
-
-
-
-
-""" # Initialize connection HELLO WORLD.
-conn = st.connection("supabase",type=SupabaseConnection)
-
-# Perform query.
-rows = conn.query("*", table="mytable", ttl="10m").execute()
-
-# Print results.
-for row in rows.data:
-    st.write(f"{row['name']} has a :{row['pet']}:") """
