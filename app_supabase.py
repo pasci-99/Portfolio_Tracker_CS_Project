@@ -11,21 +11,24 @@ st_supabase_client = st.connection(
     key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ",
 )
 
-st.title("Oiii mate")
+username=""
+st.title("Oiii " + username)
+
 
 with st.form("Login"):
         myUserName = st.text_input("Enter your username")
         submitted = st.form_submit_button("Login")
         if submitted:
+            username = myUserName
             response = st_supabase_client.query("*", table="test", ttl=0).execute()
             st.write("Filtered by username:")
             st.write([obj for obj in response.data if obj.get('username') == myUserName])
 
 
-""" if st.button('Write'):
+if st.button('Write'):
     st.write(st_supabase_client.table("test").insert(
-    [{"test": "Eyo crazy motherfucker"}, {"test": "How you doin?"}], count="None"
-).execute()) """
+    [{"test": "APPL", "username": username}], count="None"
+).execute())
 
 
 
