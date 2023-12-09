@@ -20,12 +20,7 @@ with st.form("Login"):
             response = st_supabase_client.query("*", table="test", ttl=0).execute()
             st.write(response.data)
             st.write("Filtered by username:")
-            st.write(filter_by_username(response.data))
-
-def filter_by_username(data):
-    # Assuming data is a list of dictionaries with the specified properties
-    filtered_objects = [obj for obj in data if obj.get('username') == 'jonas']
-    return filtered_objects
+            st.write([obj for obj in response.data if obj.get('username') == 'jonas'])
 
 
 """ if st.button('Write'):
