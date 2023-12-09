@@ -13,7 +13,7 @@ st_supabase_client = st.connection(
 
 
 
-st.write(st_supabase_client.query("*", table="test", ttl=0).execute())
+st.write(st_supabase_client.query("*", table="test").execute())
 
 """ # Initialize connection HELLO WORLD.
 conn = st.connection("supabase",type=SupabaseConnection)
