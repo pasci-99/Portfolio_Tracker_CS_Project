@@ -2,7 +2,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
-from supabase import create_client, Client
+from st_supabase_connection import SupabaseConnection
 
 # Streamlit app layout
 st.title("Stock Holdings Value Tracker")
