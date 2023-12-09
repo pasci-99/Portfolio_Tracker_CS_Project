@@ -25,8 +25,8 @@ with st.form("Login"):
             
 if st.button("Read"):
     response = st_supabase_client.query("*", table="test", ttl=0).execute()
-            st.write("Filtered by username:")
-            st.write([obj for obj in response.data if obj.get('username') == myUserName])
+    st.write("Filtered by username:")
+    st.write([obj for obj in response.data if obj.get('username') == myUserName])
 
 if st.button('Write'):
     st.write(st_supabase_client.table("test").insert(
