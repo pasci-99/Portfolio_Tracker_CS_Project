@@ -13,9 +13,9 @@ st_supabase_client = st.connection(
 
 
 
-print(st_supabase_client.query("*", table="test", ttl=0).execute())
+st.write(st_supabase_client.query("*", table="test", ttl=0).execute())
 
-""" # Initialize connection.
+""" # Initialize connection HELLO WORLD.
 conn = st.connection("supabase",type=SupabaseConnection)
 
 # Perform query.
