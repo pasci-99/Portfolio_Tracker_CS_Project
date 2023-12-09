@@ -5,11 +5,13 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import requests
 
+
+
+
 # Streamlit app layout
 st.title("Stock Holdings Value Tracker")
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
-
 
 with tab1:
     # User definition
