@@ -17,13 +17,19 @@ with st.form("Login"):
         myUserName = st.text_input("Enter your username")
         submitted = st.form_submit_button("Login")
         if submitted:
-            response = st_supabase_client.select("*", table="test").eq("username", myUserName).execute()
+            response = st_supabase_client.select("*", table="test").execute()
         
             if response.status_code == 200:
                 st.write(response.data)
+                st.write("Filtered by username:")
+                st.write(filter_by_username(response.data))
             else:
                 st.error(f"Error: {response.text}")
 
+def filter_by_username(data):
+    # Assuming data is a list of dictionaries with the specified properties
+    filtered_objects = [obj for obj in data if obj.get('username') == 'jonas']
+    return filtered_objects
 
 
 """ if st.button('Write'):
