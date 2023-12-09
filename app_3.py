@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 # Streamlit app layout
 st.title("Stock Holdings Value Tracker")
 
-tab1, tab2 = st.tabs(["Portfolio Tracker", "Other Tool"])
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 
 
