@@ -19,8 +19,8 @@ with st.form("Login"):
         if submitted:
             response = st_supabase_client.query("*", table="test", ttl=0).execute()
             st.write(response.data)
-                st.write("Filtered by username:")
-                st.write(filter_by_username(response.data))
+            st.write("Filtered by username:")
+            st.write(filter_by_username(response.data))
 
 def filter_by_username(data):
     # Assuming data is a list of dictionaries with the specified properties
