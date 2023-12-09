@@ -4,4 +4,4 @@ pandas
 matplotlib
 alpha_vantage
 datetime
-supabase
+st-supabase-connection==1.2.1
