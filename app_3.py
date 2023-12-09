@@ -91,6 +91,31 @@ with tab2:
             if format_camel_case(key) == formatted_name:
                 return key
         return None
+    
+
+        # NewsAPI key
+    news_api_key = 'd3e1cfc10e9e472ca85a16f294c9dc78'
+
+    # Function to fetch news
+    def get_stock_news(symbol):
+        base_url = "https://newsapi.org/v2/everything?"
+        query = f"q={symbol}&apiKey={news_api_key}"
+        response = requests.get(base_url + query)
+        articles = response.json().get('articles', [])
+        return articles[:5]  # Return top 5 articles
+
+    # Display news for the selected stock
+    news_symbol = st.sidebar.text_input("Enter Stock Symbol for News")
+    if news_symbol:
+            st.sidebar.write(f"Latest News for {news_symbol}:")
+            news_items = get_stock_news(news_symbol)
+            for item in news_items:
+                    st.sidebar.write(f"**{item['title']}**")
+                    st.sidebar.write(item['description'])
+                    st.sidebar.write(f"[Read more]({item['url']})", unsafe_allow_html=True)
+                    st.sidebar.write("---")
+
+
     # Initialize session state for stock symbols
     if 'num_stocks' not in st.session_state:
         st.session_state['num_stocks'] = 1  # Start with 1 stock
