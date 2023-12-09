@@ -7,7 +7,11 @@ st_supabase_client = st.connection(
     name="pasci99connection",
     type=SupabaseConnection,
     ttl=None,
+    url="https://pulfkaxpvhgvgvlgjpaj.supabase.co",
+    key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ",
 )
+
+
 
 print(st_supabase_client.query("*", table="test", ttl=0).execute())
 
