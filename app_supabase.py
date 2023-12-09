@@ -12,6 +12,9 @@ st_supabase_client = st.connection(
 )
 
 
+if st.button("Write")
+    st.write('Hello')
+
 
 st.write(st_supabase_client.query("*", table="test").execute().data)
 
@@ -24,3 +27,7 @@ rows = conn.query("*", table="mytable", ttl="10m").execute()
 # Print results.
 for row in rows.data:
     st.write(f"{row['name']} has a :{row['pet']}:") """
+
+st_supabase_client.table("test").insert(
+    [{"test": "Eyo crazy motherfucker"}, {"test": "How you doin?"}], count="None"
+).execute()
