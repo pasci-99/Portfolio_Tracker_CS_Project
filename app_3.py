@@ -9,15 +9,7 @@ SUPABASE_URL = "https://vzoizgrsdwulmwwopjvq.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6b2l6Z3JzZHd1bG13d29wanZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxMjAwMDAsImV4cCI6MjAxNzY5NjAwMH0.vxL92OsvTj70xV-l-2eyEJl6tf3InETpqB2dVCvL-TQ"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-
-with st.sidebar:
-    with st.expander("Register"):
-        reg_email = st.text_input("Email", key="reg_email")
-        reg_password = st.text_input("Password", type='password', key="reg_password")
-
-        if st.button("Register"):
-            # Call the registration function here
-
+# Registration Function
 def supabase_register(email, password):
     user = supabase.auth.sign_up(email=email, password=password)
     if user.get('user'):
@@ -26,14 +18,20 @@ def supabase_register(email, password):
         error_message = user.get('error', {}).get('message', 'Registration failed.')
         return False, error_message
 
-if st.button("Register"):
-    success, message = supabase_register(reg_email, reg_password)
-    if success:
-        st.success(message)
-    else:
-        st.error(message)
+# Sidebar for Registration
+with st.sidebar:
+    with st.expander("Register"):
+        reg_email = st.text_input("Email", key="reg_email")
+        reg_password = st.text_input("Password", type='password', key="reg_password")
 
+        if st.button("Register"):
+            success, message = supabase_register(reg_email, reg_password)
+            if success:
+                st.success(message)
+            else:
+                st.error(message)
 
+# Login Function
 def supabase_login(username, password):
     user = supabase.auth.sign_in(email=username, password=password)
     if user.get('user'):
@@ -41,13 +39,18 @@ def supabase_login(username, password):
     else:
         return False, None
 
-# Verify users
+# Sidebar for Login
+username = st.sidebar.text_input("Username")
+password = st.sidebar.text_input("Password", type='password')
+
 if st.sidebar.button("Login"):
     login_success, user = supabase_login(username, password)
     if login_success:
         st.success(f"Logged in as {user['email']}")
     else:
         st.error("Incorrect username or password")
+
+
 
 
 
