@@ -18,9 +18,8 @@ with st.form("Login"):
         submitted = st.form_submit_button("Login")
         if submitted:
             response = st_supabase_client.query("*", table="test", ttl=0).execute()
-            st.write(response.data)
             st.write("Filtered by username:")
-            st.write([obj for obj in response.data if obj.get('username') == 'jonas'])
+            st.write([obj for obj in response.data if obj.get('username') == myUserName])
 
 
 """ if st.button('Write'):
