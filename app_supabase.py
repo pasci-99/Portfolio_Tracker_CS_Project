@@ -17,7 +17,7 @@ with st.form("Login"):
         myUserName = st.text_input("Enter your username")
         submitted = st.form_submit_button("Login")
         if submitted:
-            st.write(st_supabase_client.query("*", table="test").eq("username", myUserName).execute().data)
+            st.write(st_supabase_client.query("*", table="test").eq("username", "jonas").execute().data)
 
 
 
