@@ -12,7 +12,7 @@ st_supabase_client = st.connection(
 )
 
 st.session_state['username'] = ""
-st.title("Oiii " + username)
+st.title("Oiii " + st.session_state['username'])
 
 
 with st.form("Login"):
