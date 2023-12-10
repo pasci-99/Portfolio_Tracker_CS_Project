@@ -93,5 +93,5 @@ if st.session_state['username'] != "":
                 st.write(holding['purchase_date'])
             with col4:
                 # Use a unique key for each button
-                if st.button('Delete Holding', key=f"delete_{holding['id']}"):
+                if st.button(f"Delete {holding['id']}", key=f"delete_{holding['id']}"):
                     delete_holding(holding['id'])
