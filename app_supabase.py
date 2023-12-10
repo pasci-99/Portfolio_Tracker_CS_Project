@@ -29,12 +29,6 @@ if st.session_state['username'] != "":
         st.write("Wrote data:", data)
         
 
-""" def delete_holding(holding_id):
-    # Execute the delete query
-    response = st_supabase_client.from_("portfolio").delete().eq('id', holding_id).execute()
-    print("---------------------"+response)
-
-
 if st.session_state['username'] != "":
     with st.form("Add Holding"):
         # Input fields to collect the data from the user
@@ -50,17 +44,17 @@ if st.session_state['username'] != "":
         # Convert the date to a string in ISO format before sending it to Supabase
         formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
         
-        response = st_supabase_client.table("portfolio").insert(
-            [{
+        response = supabase.table("portfolio").insert(
+            {
                 "stock_symbol": symbol, 
                 "quantity": amount_of_shares, 
                 "purchase_date": formatted_purchase_date,
-                "username": st.session_state['username']  # or username if you have it
-            }]
+                "username": st.session_state['username']
+            }
         ).execute()
     
 
-    # Get the current user's username
+    """ # Get the current user's username
     myUserName = st.session_state.get('username')
 
     # Execute the query to fetch all data from the 'portfolio' table
