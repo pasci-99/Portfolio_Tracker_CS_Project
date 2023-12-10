@@ -86,9 +86,8 @@ if st.session_state['username'] != "":
         
         # Display the filtered data
         st.write("Holdings for username:", myUserName)
+        
         for holding in filtered_data:
-
-            # Use Streamlit columns to layout the holding information and delete button
             col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
             with col1:
                 st.write(holding['stock_symbol'])
@@ -97,10 +96,8 @@ if st.session_state['username'] != "":
             with col3:
                 st.write(holding['purchase_date'])
             with col4:
-                if st.button("Delete Holding"):
-                    delete_holding(holding['id'])
-
-
-def delete_holding(holding_id):
-    # Execute the delete query
-    response = st_supabase_client.table("portfolio").delete().eq('id', holding_id).execute()
+                # Use the holding's ID to create a unique key for the button
+                delete_button = st.button("Delete Holding", key=f"delete_{holding['id']}")
+                if delete_button:
+                    # Use the holding's ID to delete the correct holding
+                    response = st_supabase_client.table("portfolio").delete().eq('id', holding['id']).execute()
