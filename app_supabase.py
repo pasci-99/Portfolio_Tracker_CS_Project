@@ -153,7 +153,7 @@ else:
             # Extract and format all available data points
             all_data_points = [format_camel_case(point) for point in sample_data.keys()]
             # Multiselect dropdown for choosing data points
-            selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap', 'Sector', 'Dividend Rate', 'Dividend Yield', 'Payout Ratio', 'Volume', 'Currency', 'Price To Book'])
+            selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap', 'Sector', 'Dividend Yield', 'Payout Ratio', 'Currency', 'Price To Book'])
             # Function to add more stocks
             def add_stock():
                 st.session_state['num_stocks'] += 1
