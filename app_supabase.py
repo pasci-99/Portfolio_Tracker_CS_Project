@@ -83,6 +83,8 @@ if st.session_state['username'] != "":
 
         for holding in filtered_data:
             col0, col1, col2, col3, col4 = st.columns([3, 3, 3, 3, 3])
+            with col0:
+                st.write(holding['id'])
             with col1:
                 st.write(holding['stock_symbol'])
             with col2:
