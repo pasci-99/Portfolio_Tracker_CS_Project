@@ -42,6 +42,7 @@ if st.session_state['username'] != "":
 def delete_holding(holding_id):
     # Execute the delete query
     response = st_supabase_client.from_("portfolio").delete().eq('id', holding_id).execute()
+    st.write(response)
 
 
 if st.session_state['username'] != "":
@@ -93,5 +94,5 @@ if st.session_state['username'] != "":
                 st.write(holding['purchase_date'])
             with col4:
                 # Use a unique key for each button
-                if st.button(f"Delete {holding['id']}", key=f"delete_{holding['id']}"):
+                if st.button("Delete", key=f"delete_{holding['id']}"):
                     delete_holding(holding['id'])
