@@ -30,6 +30,9 @@ if st.session_state['username'] != "":
         
 
 if st.session_state['username'] != "":
+    # Get the current user's username
+    myUserName = st.session_state.get('username')
+
     with st.form("Add Holding"):
         # Input fields to collect the data from the user
         symbol = st.text_input("Enter Stock Symbol")
@@ -49,24 +52,22 @@ if st.session_state['username'] != "":
                 "stock_symbol": symbol, 
                 "quantity": amount_of_shares, 
                 "purchase_date": formatted_purchase_date,
-                "username": st.session_state['username']
+                "username": myUserName
             }
         ).execute()
+
+        st.write("Holding added!")
     
 
-    """ # Get the current user's username
-    myUserName = st.session_state.get('username')
+    
 
     # Execute the query to fetch all data from the 'portfolio' table
-    response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
-
-    # Filter the records in Python
-    filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
+    response = supabase.table("portfolio").select("*").eq("username", myUserName).execute()
 
     # Display the filtered data
-    st.write("Holdings for username:", myUserName)
+    st.write("Your holdings:")
 
-    for holding in filtered_data:
+    for holding in response.data:
         col0, col1, col2, col3, col4 = st.columns([3, 3, 3, 3, 3])
         with col0:
             st.write(holding['id'])
@@ -79,7 +80,5 @@ if st.session_state['username'] != "":
         with col4:
             # Use a unique key for each button
             if st.button("Delete", key=f"delete_{holding['id']}"):
-                response = st_supabase_client.from_("portfolio").delete().eq('id', holding['id']).execute()
+                response = supabase.table("portfolio").delete().eq('id', holding['id']).execute()
                 st.write(response)
-                # Force a re-run to update the UI
-                st.experimental_rerun() """
