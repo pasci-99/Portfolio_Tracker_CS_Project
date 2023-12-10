@@ -1,16 +1,10 @@
 # streamlit_app.py
 
 import streamlit as st
-from st_supabase_connection import SupabaseConnection
+from supabase import create_client, Client
 from datetime import date
 
-st_supabase_client = st.connection(
-    name="pasci99connection",
-    type=SupabaseConnection,
-    ttl=None,
-    url="https://pulfkaxpvhgvgvlgjpaj.supabase.co",
-    key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ",
-)
+supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
@@ -26,20 +20,20 @@ with st.form("Login"):
 
 if st.session_state['username'] != "":
     if st.button("Read"):
-        response = st_supabase_client.query("*", table="test", ttl=0).execute()
+        response = supabase.table("test").select("*").execute()
         st.write("Filtered by username:")
         st.write([obj for obj in response.data if obj.get('username') == myUserName])
 
-    if st.button('Write'):
+    """ if st.button('Write'):
         st.write(st_supabase_client.table("test").insert(
-        [{"test": "APPL", "username": st.session_state['username']}], count="None"
+        [{"test": "APPL", "username": st.session_state['username']}], count="None" """
 
 
 
-).execute())
+
         
 
-def delete_holding(holding_id):
+""" def delete_holding(holding_id):
     # Execute the delete query
     response = st_supabase_client.from_("portfolio").delete().eq('id', holding_id).execute()
     print("---------------------"+response)
@@ -69,7 +63,7 @@ if st.session_state['username'] != "":
             }]
         ).execute()
     
-    
+
     # Get the current user's username
     myUserName = st.session_state.get('username')
 
@@ -98,4 +92,4 @@ if st.session_state['username'] != "":
                 response = st_supabase_client.from_("portfolio").delete().eq('id', holding['id']).execute()
                 st.write(response)
                 # Force a re-run to update the UI
-                st.experimental_rerun()
+                st.experimental_rerun() """
