@@ -76,7 +76,7 @@ else:
     
     # region Portfolio Value Chart
     total_values = pd.DataFrame()
-    response = supabase.table("portfolio").select("stock_symbol", "quantity", "purchase_date").eq("username", myUserName).execute()
+    response = supabase.table("portfolio").select("id","stock_symbol", "quantity", "purchase_date").eq("username", myUserName).execute()
     for holding in response.data:
         stock = yf.Ticker(holding['stock_symbol'])
         data = stock.history(start=holding['purchase_date'])
