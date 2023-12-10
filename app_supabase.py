@@ -15,7 +15,7 @@ st_supabase_client = st.connection(
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
-st.title("Oiii " + st.session_state['username'])
+st.title("Oii " + st.session_state['username'])
 
 
 with st.form("Login"):
@@ -87,25 +87,16 @@ if st.session_state['username'] != "":
         # Display the filtered data
         st.write("Holdings for username:", myUserName)
 
-def display_holdings():
-    myUserName = st.session_state.get('username')
-    response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
-    filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
-    
-    for holding in filtered_data:
-        col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
-        with col1:
-            st.write(holding['stock_symbol'])
-        with col2:
-            st.write(holding['quantity'])
-        with col3:
-            st.write(holding['purchase_date'])
-        with col4:
-            delete_button = st.button("Delete Holding", key=f"delete_{holding['id']}")
-            if delete_button:
-                response = st_supabase_client.table("portfolio").delete().eq('id', holding['id']).execute()
-                st.write(f"Delete response: {response}")  # Debugging statement
-                display_holdings()  # Refresh the display
-
-if st.button("Display Holdings"):
-    display_holdings()
+        for holding in filtered_data:
+            col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
+            with col1:
+                st.write(holding['stock_symbol'])
+            with col2:
+                st.write(holding['quantity'])
+            with col3:
+                st.write(holding['purchase_date'])
+            with col4:
+                if st.button('Delete Holding'):
+                # Use the holding's ID to delete the correct holding
+                    st.write(f"delete_{holding['id']}")
+                    response = st_supabase_client.table("portfolio").delete(holding['id']
