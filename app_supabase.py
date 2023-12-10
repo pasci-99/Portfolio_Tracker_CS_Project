@@ -38,27 +38,43 @@ if st.session_state['username'] != "":
 
 ).execute())
         
+if st.session_state['username'] != "":
+    with st.form("Add Holding"):
+        # Input fields to collect the data from the user
+        symbol = st.text_input("Enter Stock Symbol")
+        amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0.01, step=0.01, format="%.2f")
+        purchase_date = st.date_input("Select Purchase Date")
+        
+        # Form submission button
+        submitted = st.form_submit_button("Add Holding")
 
-with st.form("Add Holding"):
-    # Input fields to collect the data from the user
-    symbol = st.text_input("Enter Stock Symbol")
-    amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0.01, step=0.01, format="%.2f")
-    purchase_date = st.date_input("Select Purchase Date")
-    
-    # Form submission button
-    submitted = st.form_submit_button("Add Holding")
-    
-# ... rest of your code ...
 
-if submitted and st.session_state.get('username'):
-    # Convert the date to a string in ISO format before sending it to Supabase
-    formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
-    
-    response = st_supabase_client.table("portfolio").insert(
-        [{
-            "stock_symbol": symbol, 
-            "quantity": amount_of_shares, 
-            "purchase_date": formatted_purchase_date,
-            "user_id": st.session_state['username']  # or user_id if you have it
-        }]
-    ).execute()
+    if submitted and st.session_state.get('username'):
+        # Convert the date to a string in ISO format before sending it to Supabase
+        formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
+        
+        response = st_supabase_client.table("portfolio").insert(
+            [{
+                "stock_symbol": symbol, 
+                "quantity": amount_of_shares, 
+                "purchase_date": formatted_purchase_date,
+                "user_id": st.session_state['username']  # or user_id if you have it
+            }]
+        ).execute()
+
+    if st.button("Display Holdings"):
+        # Get the current user's username
+        myUserName = st.session_state.get('username')
+
+        # Execute the query to fetch all data from the 'portfolio' table
+        response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
+
+        # Filter the records in Python (less efficient but okay for small datasets)
+        if response.status_code == 200 and response.data:
+            st.write("Holdings for username:", myUserName)
+            filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
+            st.write(filtered_data)
+        else:
+            st.error("Failed to load data.")
+
+
