@@ -41,13 +41,7 @@ if st.session_state['username'] != "":
 
 def delete_holding(holding_id):
     # Execute the delete query
-    response = st_supabase_client.table("portfolio").delete().eq('id', holding_id).execute()
-    # After deletion, you may want to refresh the data displayed
-
-def display_holdings():
-    myUserName = st.session_state.get('username')
-    response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
-    filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
+    response = st_supabase_client.from_("portfolio").delete().eq('id', holding_id).execute()
 
 
 if st.session_state['username'] != "":
@@ -83,13 +77,7 @@ if st.session_state['username'] != "":
 
         # Filter the records in Python
         filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
-        
-def delete_holding(holding_id):
-    # Execute the delete query
-    response = st_supabase_client.from_("portfolio").delete().eq('id', holding_id).execute()
-
-    # After deletion, you may want to check the response or refresh the data displayed
-        
+  
         # Display the filtered data
         st.write("Holdings for username:", myUserName)
 
