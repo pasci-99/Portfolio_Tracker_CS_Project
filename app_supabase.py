@@ -9,30 +9,21 @@ supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "ey
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
-st.title("Oii " + st.session_state['username'])
 
+# Get the current user's username
+myUserName = st.session_state.get('username')
+st.title("Oii " + myUserName)
 
-with st.form("Login"):
-        myUserName = st.text_input("Enter your username")
+if myUserName == "":
+    #---IF USER IS NOT LOGGED IN---
+    with st.form("Login"):
+        enteredUsername = st.text_input("Enter your username")
         submitted = st.form_submit_button("Login")
         if submitted:
-            st.session_state['username'] = myUserName
-
-if st.session_state['username'] != "":
-    if st.button("Read"):
-        response = supabase.table("test").select("*").eq("username", st.session_state['username']).execute()
-        st.write("Filtered by username:")
-        st.write(response.data)
-
-    if st.button('Write'):
-        data, count = supabase.table("test").insert({"test": "APPL", "username": st.session_state['username']}).execute()
-        st.write("Wrote data:", data)
-        
-
-if st.session_state['username'] != "":
-    # Get the current user's username
-    myUserName = st.session_state.get('username')
-
+            st.session_state['username'] = enteredUsername
+else:
+    #---IF USER IS LOGGED IN---
+    # region Add Holding Form
     with st.form("Add Holding"):
         # Input fields to collect the data from the user
         symbol = st.text_input("Enter Stock Symbol")
@@ -42,8 +33,7 @@ if st.session_state['username'] != "":
         # Form submission button
         submitted = st.form_submit_button("Add Holding")
 
-
-    if submitted and st.session_state.get('username'):
+    if submitted:
         # Convert the date to a string in ISO format before sending it to Supabase
         formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
         
@@ -55,9 +45,8 @@ if st.session_state['username'] != "":
                 "username": myUserName
             }
         ).execute()
-
         st.write("Holding added!")
-    
+    # endregion
 
     
 
