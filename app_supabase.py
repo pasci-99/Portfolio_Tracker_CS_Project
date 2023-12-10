@@ -78,7 +78,7 @@ else:
     total_values = pd.DataFrame()
     response = supabase.table("portfolio").select("stock_symbol", "quantity", "purchase_date").eq("username", myUserName).execute()
     for holding in response.data:
-        st.write( holding["stock_symbol", "quantity", "purchase_date"])
+        st.write( holding["stock_symbol"])
 
 
 
