@@ -97,3 +97,5 @@ if st.session_state['username'] != "":
                 if st.button("Delete", key=f"delete_{holding['id']}"):
                     response = st_supabase_client.from_("portfolio").delete().eq('id', holding['id']).execute()
                     st.write(response)
+                    # Force a re-run to update the UI
+                    st.experimental_rerun()
