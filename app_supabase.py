@@ -20,9 +20,9 @@ with st.form("Login"):
 
 if st.session_state['username'] != "":
     if st.button("Read"):
-        response = supabase.table("test").select("*").execute()
+        response = supabase.table("test").select("*").eq("username", st.session_state['username']).execute()
         st.write("Filtered by username:")
-        st.write([obj for obj in response.data if obj.get('username') == myUserName])
+        st.write(response.data)
 
     if st.button('Write'):
         data, count = supabase.table("test").insert({"test": "APPL", "username": st.session_state['username']}).execute()
