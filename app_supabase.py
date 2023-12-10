@@ -84,7 +84,7 @@ else:
 
 
 
- """    for holding in st.session_state['holdings']:
+    """    for holding in st.session_state['holdings']:
         stock = yf.Ticker(holding['symbol'])
         data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
         holding_value = data['Close'] * holding['amount']
