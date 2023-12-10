@@ -74,6 +74,21 @@ if st.session_state['username'] != "":
         
         # Display the filtered data
         st.write("Holdings for username:", myUserName)
-        st.write(filtered_data)
+        for holding in filtered_data:
+            
+            # Use Streamlit columns to layout the holding information and delete button
+            col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
+            with col1:
+                st.write(holding['stock_symbol'])
+            with col2:
+                st.write(holding['quantity'])
+            with col3:
+                st.write(holding['purchase_date'])
+            with col4:
+                if st.button("Delete", key=f"delete_{holding['id']}"):
+                    # Code to delete the holding
+                    # You will need to implement this part
+                    pass
+
 
 
