@@ -15,7 +15,7 @@ st_supabase_client = st.connection(
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
-st.title("Oii " + st.session_state['username'])
+st.title("Oiii " + st.session_state['username'])
 
 
 with st.form("Login"):
@@ -75,7 +75,7 @@ if st.session_state['username'] != "":
         # Display the filtered data
         st.write("Holdings for username:", myUserName)
         for holding in filtered_data:
-            
+
             # Use Streamlit columns to layout the holding information and delete button
             col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
             with col1:
