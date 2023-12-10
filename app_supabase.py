@@ -54,9 +54,7 @@ else:
     response = supabase.table("portfolio").select("*").eq("username", myUserName).execute()
 
     # Display the filtered data
-
     st.header("Your holdings (Header):")
-
     st.write("Your holdings:")
         
 
