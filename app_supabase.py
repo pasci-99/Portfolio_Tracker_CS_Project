@@ -83,12 +83,10 @@ else:
         data = stock.history(start=holding['purchase_date'])
         holding_value = data['Close'] * holding['quantity']
         holding_value.name = holding['stock_symbol']  # Naming the series with the symbol for identification
-        st.write(holding_value)
-        st.write(holding_value.to_frame())
-        """ if total_values.empty:
-            total_values = holding_value.to_frame()
+        if total_values.empty:
+            total_values = holding_value
         else:
-            total_values = total_values.join(holding_value, how='outer') """
+            total_values = total_values.join(holding_value, how='outer')
 
 
 
