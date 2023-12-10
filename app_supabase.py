@@ -95,4 +95,5 @@ if st.session_state['username'] != "":
             with col4:
                 # Use a unique key for each button
                 if st.button("Delete", key=f"delete_{holding['id']}"):
-                    st_supabase_client.from_("portfolio").delete().eq('id', holding['id']).execute()
+                    response = st_supabase_client.from_("portfolio").delete().eq('id', holding['id']).execute()
+                    st.write(response)
