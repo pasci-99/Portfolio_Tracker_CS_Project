@@ -84,6 +84,7 @@ if st.session_state['username'] != "":
         # Filter the records in Python
         filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
         
+        
         # Display the filtered data
         st.write("Holdings for username:", myUserName)
 
@@ -98,5 +99,4 @@ if st.session_state['username'] != "":
             with col4:
                 if st.button('Delete Holding'):
                 # Use the holding's ID to delete the correct holding
-                    st.write(f"delete_{holding['id']}")
-                    response = st_supabase_client.table("portfolio").delete(holding['id'])
+                    delete_holding(holding['id'])
