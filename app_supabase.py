@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 
-tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
+
 
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
@@ -20,6 +20,7 @@ if 'username' not in st.session_state:
 myUserName = st.session_state.get('username')
 st.title("Hallo " + myUserName)
 
+tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 if myUserName == "":
     # region USER IS NOT LOGGED IN
     with st.form("Login"):
