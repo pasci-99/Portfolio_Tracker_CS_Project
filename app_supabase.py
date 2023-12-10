@@ -81,8 +81,7 @@ else:
         stock = yf.Ticker(holding['stock_symbol'])
         data = stock.history(start=holding['purchase_date'])
         holding_value = data['Close'] * holding['quantity']
-        holding_value.id = holding['id']  # Naming the series with the symbol for identification
-        holding_value.name = holding['stock_symbol']  # Naming the series with the symbol for identification
+        holding_value.name = holding['stock_symbol']+holding['purchase_date']  # Naming the series with the symbol for identification
         if total_values.empty:
             total_values = holding_value.to_frame()
         else:
@@ -97,7 +96,7 @@ else:
         total_values.index = total_values.index.date
         # Display data as a line chart
         st.line_chart(total_values['Total Value'])
-        # Display the data in a table format
-        st.dataframe(total_values, width=700, height=300)
+        # Display the data in a table format and show the stock symbols as columns
+        st.dataframe(total_values, width=700, height=300, scrollable=True, fit_columns=True)
     # endregion
     # endregion
