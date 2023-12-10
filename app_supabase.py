@@ -58,7 +58,7 @@ if st.session_state['username'] != "":
                 "stock_symbol": symbol, 
                 "quantity": amount_of_shares, 
                 "purchase_date": formatted_purchase_date,
-                "user_id": st.session_state['username']  # or user_id if you have it
+                "username": st.session_state['username']  # or username if you have it
             }]
         ).execute()
 
