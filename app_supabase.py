@@ -24,13 +24,9 @@ if st.session_state['username'] != "":
         st.write("Filtered by username:")
         st.write([obj for obj in response.data if obj.get('username') == myUserName])
 
-    """ if st.button('Write'):
-        st.write(st_supabase_client.table("test").insert(
-        [{"test": "APPL", "username": st.session_state['username']}], count="None" """
-
-
-
-
+    if st.button('Write'):
+        data, count = supabase.table("test").insert({"test": "APPL", "username": st.session_state['username']}).execute()
+        st.write("Wrote data:", data)
         
 
 """ def delete_holding(holding_id):
