@@ -15,14 +15,15 @@ myUserName = st.session_state.get('username')
 st.title("Oii " + myUserName)
 
 if myUserName == "":
-    #---IF USER IS NOT LOGGED IN---
+    # region USER IS NOT LOGGED IN
     with st.form("Login"):
         enteredUsername = st.text_input("Enter your username")
         submitted = st.form_submit_button("Login")
         if submitted:
             st.session_state['username'] = enteredUsername
+    # endregion
 else:
-    #---IF USER IS LOGGED IN---
+    # region USER IS LOGGED IN
     # region Add Holding Form
     with st.form("Add Holding"):
         # Input fields to collect the data from the user
@@ -48,18 +49,16 @@ else:
         st.write("Holding added!")
     # endregion
 
-    
-
+    # region Holdings Table
     # Execute the query to fetch all data from the 'portfolio' table
     response = supabase.table("portfolio").select("*").eq("username", myUserName).execute()
 
     # Display the filtered data
     st.write("Your holdings:")
+    st.header("Your holdings:")
 
     for holding in response.data:
-        col0, col1, col2, col3, col4 = st.columns([3, 3, 3, 3, 3])
-        with col0:
-            st.write(holding['id'])
+        col1, col2, col3, col4 = st.columns([3, 3, 3, 3])
         with col1:
             st.write(holding['stock_symbol'])
         with col2:
@@ -71,3 +70,5 @@ else:
             if st.button("Delete", key=f"delete_{holding['id']}"):
                 response = supabase.table("portfolio").delete().eq('id', holding['id']).execute()
                 st.rerun()
+    # endregion
+    # endregion
