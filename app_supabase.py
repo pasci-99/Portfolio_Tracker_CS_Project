@@ -81,3 +81,4 @@ if st.session_state['username'] != "":
             # Use a unique key for each button
             if st.button("Delete", key=f"delete_{holding['id']}"):
                 response = supabase.table("portfolio").delete().eq('id', holding['id']).execute()
+                st.rerun()
