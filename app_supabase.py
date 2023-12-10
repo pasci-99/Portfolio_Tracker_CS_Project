@@ -81,7 +81,8 @@ else:
         stock = yf.Ticker(holding['stock_symbol'])
         data = stock.history(start=holding['purchase_date'])
         holding_value = data['Close'] * holding['quantity']
-        holding_value.name = holding['id']  # Naming the series with the symbol for identification
+        holding_value.id = holding['id']  # Naming the series with the symbol for identification
+        holding_value.name = holding['stock_symbol']  # Naming the series with the symbol for identification
         if total_values.empty:
             total_values = holding_value.to_frame()
         else:
