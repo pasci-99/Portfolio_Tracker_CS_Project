@@ -15,7 +15,7 @@ st_supabase_client = st.connection(
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
-st.title("Oiiii " + st.session_state['username'])
+st.title("Oi " + st.session_state['username'])
 
 
 with st.form("Login"):
