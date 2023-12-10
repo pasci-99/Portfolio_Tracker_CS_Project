@@ -68,34 +68,34 @@ if st.session_state['username'] != "":
                 "username": st.session_state['username']  # or username if you have it
             }]
         ).execute()
+    
+    
+    # Get the current user's username
+    myUserName = st.session_state.get('username')
 
-    if st.button("Display Holdings"):
-        # Get the current user's username
-        myUserName = st.session_state.get('username')
+    # Execute the query to fetch all data from the 'portfolio' table
+    response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
 
-        # Execute the query to fetch all data from the 'portfolio' table
-        response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
+    # Filter the records in Python
+    filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
 
-        # Filter the records in Python
-        filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
-  
-        # Display the filtered data
-        st.write("Holdings for username:", myUserName)
+    # Display the filtered data
+    st.write("Holdings for username:", myUserName)
 
-        for holding in filtered_data:
-            col0, col1, col2, col3, col4 = st.columns([3, 3, 3, 3, 3])
-            with col0:
-                st.write(holding['id'])
-            with col1:
-                st.write(holding['stock_symbol'])
-            with col2:
-                st.write(holding['quantity'])
-            with col3:
-                st.write(holding['purchase_date'])
-            with col4:
-                # Use a unique key for each button
-                if st.button("Delete", key=f"delete_{holding['id']}"):
-                    response = st_supabase_client.from_("portfolio").delete().eq('id', holding['id']).execute()
-                    st.write(response)
-                    # Force a re-run to update the UI
-                    st.experimental_rerun()
+    for holding in filtered_data:
+        col0, col1, col2, col3, col4 = st.columns([3, 3, 3, 3, 3])
+        with col0:
+            st.write(holding['id'])
+        with col1:
+            st.write(holding['stock_symbol'])
+        with col2:
+            st.write(holding['quantity'])
+        with col3:
+            st.write(holding['purchase_date'])
+        with col4:
+            # Use a unique key for each button
+            if st.button("Delete", key=f"delete_{holding['id']}"):
+                response = st_supabase_client.from_("portfolio").delete().eq('id', holding['id']).execute()
+                st.write(response)
+                # Force a re-run to update the UI
+                st.experimental_rerun()
