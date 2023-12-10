@@ -8,8 +8,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 
-
-
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
 # Initialize the session state variable if not present
@@ -18,7 +16,7 @@ if 'username' not in st.session_state:
 
 # Get the current user's username
 myUserName = st.session_state.get('username')
-st.title("Hallo " + myUserName)
+st.title("Hello " + myUserName)
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 if myUserName == "":
