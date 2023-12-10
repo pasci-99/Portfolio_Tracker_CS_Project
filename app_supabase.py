@@ -88,3 +88,35 @@ if st.session_state['username'] != "":
 
 
 ).execute())
+        
+
+
+with st.form("Add Holding"):
+    # Input fields to collect the data from the user
+    symbol = st.text_input("Enter Stock Symbol")
+    amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0.01, step=0.01, format="%.2f")
+    purchase_date = st.date_input("Select Purchase Date")
+    
+    # Form submission button
+    submitted = st.form_submit_button("Add Holding")
+    
+    if submitted and st.session_state.get('username'):
+        # Use the username from the session state as the user_id
+        user_id = st.session_state['username']  # This is the username being used as a user_id
+        
+        # Perform the insert operation to the Supabase table
+        response = st_supabase_client.table("portfolio").insert(
+            [{
+                "stock_symbol": symbol, 
+                "quantity": amount_of_shares, 
+                "purchase_date": purchase_date,
+                "user_id": user_id  # Insert the username as the user_id
+            }]
+        ).execute()
+        
+        # Check if the insert operation was successful
+        if response.status_code == 201:
+            st.success("Portfolio entry added successfully!")
+        else:
+            st.error("Failed to add portfolio entry. Please try again.")
+
