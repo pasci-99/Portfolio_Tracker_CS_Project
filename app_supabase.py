@@ -42,7 +42,7 @@ if st.session_state['username'] != "":
 def delete_holding(holding_id):
     # Execute the delete query
     response = st_supabase_client.from_("portfolio").delete().eq('id', holding_id).execute()
-    st.write(response)
+    print("---------------------"+response)
 
 
 if st.session_state['username'] != "":
