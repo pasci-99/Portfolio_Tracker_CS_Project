@@ -82,7 +82,7 @@ if st.session_state['username'] != "":
         st.write("Holdings for username:", myUserName)
 
         for holding in filtered_data:
-            col1, col2, col3, col4 = st.columns([3, 3, 3, 3])
+            col0, col1, col2, col3, col4 = st.columns([3, 3, 3, 3, 3])
             with col1:
                 st.write(holding['stock_symbol'])
             with col2:
