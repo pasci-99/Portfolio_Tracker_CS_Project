@@ -99,4 +99,4 @@ if st.session_state['username'] != "":
                 if st.button('Delete Holding'):
                 # Use the holding's ID to delete the correct holding
                     st.write(f"delete_{holding['id']}")
-                    response = st_supabase_client.table("portfolio").delete(holding['id']
+                    response = st_supabase_client.table("portfolio").delete(holding['id'])
