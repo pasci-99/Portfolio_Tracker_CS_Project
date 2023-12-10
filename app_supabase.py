@@ -2,6 +2,7 @@
 
 import streamlit as st
 from st_supabase_connection import SupabaseConnection
+from datetime import date
 
 st_supabase_client = st.connection(
     name="pasci99connection",
@@ -48,16 +49,15 @@ with st.form("Add Holding"):
     submitted = st.form_submit_button("Add Holding")
     
     if submitted and st.session_state.get('username'):
-        # Use the username from the session state as the user_id
-        user_id = st.session_state['username']  # This is the username being used as a user_id
+        # Convert the date to a string in ISO format before sending it to Supabase
+        formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
         
-        # Perform the insert operation to the Supabase table
         response = st_supabase_client.table("portfolio").insert(
             [{
                 "stock_symbol": symbol, 
                 "quantity": amount_of_shares, 
-                "purchase_date": purchase_date,
-                "user_id": user_id  # Insert the username as the user_id
+                "purchase_date": formatted_purchase_date,
+                "user_id": st.session_state['username']  # or user_id if you have it
             }]
         ).execute()
         
