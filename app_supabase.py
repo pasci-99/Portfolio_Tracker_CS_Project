@@ -97,6 +97,6 @@ else:
         # Display data as a line chart
         st.line_chart(total_values['Total Value'])
         # Display the data in a table format and show the stock symbols as columns
-        st.dataframe(total_values, width=700, height=300, scrollable=True, fit_columns=True)
+        st.dataframe(total_values, width=700, height=300)
     # endregion
     # endregion
