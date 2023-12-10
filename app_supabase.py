@@ -16,7 +16,7 @@ st_supabase_client = st.connection(
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
 
-st.title("Oiiii " + st.session_state['username'])
+st.title("Oiiiii " + st.session_state['username'])
 
 with st.form("Login"):
     myUserName = st.text_input("Enter your username")
