@@ -79,8 +79,8 @@ else:
     response = supabase.table("portfolio").select("stock_symbol", "quantity", "purchase_date").eq("username", myUserName).execute()
     for holding in response.data:
         st.write(holding)
-        """ stock = yf.Ticker(holding['stock_symbol'])
-        data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
+        stock = yf.Ticker(holding['stock_symbol'])
+        data = stock.history(start=holding['purchase_date'])
         holding_value = data['Close'] * holding['quantity']
         holding_value.name = holding['stock_symbol']  # Naming the series with the symbol for identification
         st.write(holding_value)
@@ -88,7 +88,7 @@ else:
         if total_values.empty:
             total_values = holding_value.to_frame()
         else:
-            total_values = total_values.join(holding_value, how='outer') """
+            total_values = total_values.join(holding_value, how='outer')
 
 
 
