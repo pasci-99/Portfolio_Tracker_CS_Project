@@ -69,12 +69,11 @@ if st.session_state['username'] != "":
         # Execute the query to fetch all data from the 'portfolio' table
         response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
 
-        # Filter the records in Python (less efficient but okay for small datasets)
-        if response.status_code == 200 and response.data:
-            st.write("Holdings for username:", myUserName)
-            filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
-            st.write(filtered_data)
-        else:
-            st.error("Failed to load data.")
+        # Filter the records in Python
+        filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
+        
+        # Display the filtered data
+        st.write("Holdings for username:", myUserName)
+        st.write(filtered_data)
 
 
