@@ -38,6 +38,11 @@ if st.session_state['username'] != "":
 
 ).execute())
         
+
+def delete_holding(holding_id):
+    # Execute the delete query
+    response = st_supabase_client.table("portfolio").delete().eq('id', holding_id).execute()
+
 if st.session_state['username'] != "":
     with st.form("Add Holding"):
         # Input fields to collect the data from the user
@@ -86,8 +91,8 @@ if st.session_state['username'] != "":
                 st.write(holding['purchase_date'])
             with col4:
                 if st.button("Delete", key=f"delete_{holding['id']}"):
-                    # Code to delete the holding
-                    # You will need to implement this part
+                    delete_holding(holding['id'])
+
                     pass
 
 
