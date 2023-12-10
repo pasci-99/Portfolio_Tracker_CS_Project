@@ -78,7 +78,7 @@ else:
     total_values = pd.DataFrame()
     response = supabase.table("portfolio").select("stock_symbol", "quantity", "purchase_date").eq("username", myUserName).execute()
     for holding in response.data:
-        stock = yf.Ticker(holding['symbol'])
+        stock = yf.Ticker(holding['stock_symbol'])
         data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
         holding_value = data['Close'] * holding['quantity']
         holding_value.name = holding['stock_symbol']  # Naming the series with the symbol for identification
