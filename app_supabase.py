@@ -15,7 +15,7 @@ st_supabase_client = st.connection(
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
-st.title("Oiiii " + st.session_state['username'])
+st.title("Oi " + st.session_state['username'])
 
 
 with st.form("Login"):
@@ -48,22 +48,23 @@ with st.form("Add Holding"):
     # Form submission button
     submitted = st.form_submit_button("Add Holding")
     
-    if submitted and st.session_state.get('username'):
-        # Convert the date to a string in ISO format before sending it to Supabase
-        formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
-        
-        response = st_supabase_client.table("portfolio").insert(
-            [{
-                "stock_symbol": symbol, 
-                "quantity": amount_of_shares, 
-                "purchase_date": formatted_purchase_date,
-                "user_id": st.session_state['username']  # or user_id if you have it
-            }]
-        ).execute()
-        
-        # Check if the insert operation was successful
-        if response.status_code == 201:
-            st.success("Portfolio entry added successfully!")
-        else:
-            st.error("Failed to add portfolio entry. Please try again.")
+# ... rest of your code ...
 
+if submitted and st.session_state.get('username'):
+    # Convert the date to a string in ISO format before sending it to Supabase
+    formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
+    
+    response = st_supabase_client.table("portfolio").insert(
+        [{
+            "stock_symbol": symbol, 
+            "quantity": amount_of_shares, 
+            "purchase_date": formatted_purchase_date,
+            "user_id": st.session_state['username']  # or user_id if you have it
+        }]
+    ).execute()
+    
+    # Check if the insert operation was successful
+    if response.get('status_code') == 201 or response.get('error') is None:
+        st.success("Portfolio entry added successfully!")
+    else:
+        st.error(f"Failed to add portfolio entry. Error: {response.get('error')}")
