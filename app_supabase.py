@@ -15,85 +15,57 @@ st_supabase_client = st.connection(
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
+
 st.title("Oiiii " + st.session_state['username'])
 
-
 with st.form("Login"):
-        myUserName = st.text_input("Enter your username")
-        submitted = st.form_submit_button("Login")
-        if submitted:
-            st.session_state['username'] = myUserName
+    myUserName = st.text_input("Enter your username")
+    submitted = st.form_submit_button("Login")
+    if submitted:
+        st.session_state['username'] = myUserName
 
-if st.session_state['username'] != "":
-    if st.button("Read"):
-        response = st_supabase_client.query("*", table="test", ttl=0).execute()
-        st.write("Filtered by username:")
-        st.write([obj for obj in response.data if obj.get('username') == myUserName])
-
-    if st.button('Write'):
-        st.write(st_supabase_client.table("test").insert(
-        [{"test": "APPL", "username": st.session_state['username']}], count="None"
-
-
-
-).execute())
-        
-
+# Function to delete a specific holding
 def delete_holding(holding_id):
-    # Execute the delete query
     response = st_supabase_client.table("portfolio").delete().eq('id', holding_id).execute()
+    # Optionally, refresh the holdings display here
+
+# Function to display holdings
+def display_holdings():
+    myUserName = st.session_state.get('username')
+    response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
+    filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
+    
+    st.write("Holdings for username:", myUserName)
+    for holding in filtered_data:
+        col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
+        with col1:
+            st.write(holding['stock_symbol'])
+        with col2:
+            st.write(holding['quantity'])
+        with col3:
+            st.write(holding['purchase_date'])
+        with col4:
+            if st.button("Delete", key=f"delete_{holding['id']}"):
+                delete_holding(holding['id'])
+                display_holdings()  # Refresh the holdings display
 
 if st.session_state['username'] != "":
     with st.form("Add Holding"):
-        # Input fields to collect the data from the user
         symbol = st.text_input("Enter Stock Symbol")
         amount_of_shares = st.number_input("Enter the Number of Shares", min_value=0.01, step=0.01, format="%.2f")
         purchase_date = st.date_input("Select Purchase Date")
-        
-        # Form submission button
         submitted = st.form_submit_button("Add Holding")
 
-
-    if submitted and st.session_state.get('username'):
-        # Convert the date to a string in ISO format before sending it to Supabase
+    if submitted:
         formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
-        
         response = st_supabase_client.table("portfolio").insert(
             [{
                 "stock_symbol": symbol, 
                 "quantity": amount_of_shares, 
                 "purchase_date": formatted_purchase_date,
-                "username": st.session_state['username']  # or username if you have it
+                "username": st.session_state['username']
             }]
         ).execute()
 
     if st.button("Display Holdings"):
-        # Get the current user's username
-        myUserName = st.session_state.get('username')
-
-        # Execute the query to fetch all data from the 'portfolio' table
-        response = st_supabase_client.query("*", table="portfolio", ttl=0).execute()
-
-        # Filter the records in Python
-        filtered_data = [obj for obj in response.data if obj.get('username') == myUserName]
-        
-        # Display the filtered data
-        st.write("Holdings for username:", myUserName)
-        for holding in filtered_data:
-
-            # Use Streamlit columns to layout the holding information and delete button
-            col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
-            with col1:
-                st.write(holding['stock_symbol'])
-            with col2:
-                st.write(holding['quantity'])
-            with col3:
-                st.write(holding['purchase_date'])
-            with col4:
-                if st.button("Delete", key=f"delete_{holding['id']}"):
-                    delete_holding(holding['id'])
-
-                    pass
-
-
-
+        display_holdings()
