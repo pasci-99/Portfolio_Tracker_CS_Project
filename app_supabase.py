@@ -63,8 +63,3 @@ if submitted and st.session_state.get('username'):
         }]
     ).execute()
     
-    # Check if the insert operation was successful
-    if response.get('status_code') == 201 or response.get('error') is None:
-        st.success("Portfolio entry added successfully!")
-    else:
-        st.error(f"Failed to add portfolio entry. Error: {response.get('error')}")
