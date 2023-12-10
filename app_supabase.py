@@ -15,7 +15,7 @@ st_supabase_client = st.connection(
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
-st.title("Oi " + st.session_state['username'])
+st.title("Oii " + st.session_state['username'])
 
 
 with st.form("Login"):
@@ -62,4 +62,3 @@ if submitted and st.session_state.get('username'):
             "user_id": st.session_state['username']  # or user_id if you have it
         }]
     ).execute()
-    
