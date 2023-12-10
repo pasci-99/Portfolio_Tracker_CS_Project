@@ -82,7 +82,6 @@ else:
         data = stock.history(start=holding['purchase_date'])
         holding_value = data['Close'] * holding['quantity']
         holding_value.name = holding['id']  # Naming the series with the symbol for identification
-        st.write(holding_value)
         if total_values.empty:
             total_values = holding_value.to_frame()
         else:
@@ -90,7 +89,7 @@ else:
 
 
 
-    """ # Sum across columns to get the total portfolio value
+    # Sum across columns to get the total portfolio value
     if not total_values.empty:
         total_values['Total Value'] = total_values.sum(axis=1)
         # Format the index to display only year, month, and day
@@ -98,6 +97,6 @@ else:
         # Display data as a line chart
         st.line_chart(total_values['Total Value'])
         # Display the data in a table format
-        st.dataframe(total_values, width=700, height=300) """
+        st.dataframe(total_values, width=700, height=300)
     # endregion
     # endregion
