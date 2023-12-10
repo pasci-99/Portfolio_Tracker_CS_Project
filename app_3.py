@@ -8,7 +8,7 @@ import requests
 
 
 
-# Streamlit app layout
+# Streamlit app layout https://medium.com/@sugath.mudali/creating-a-stock-dashboard-with-streamlit-441039bdf7e0
 st.title("Stock Holdings Value Tracker")
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
@@ -32,7 +32,7 @@ with tab1:
             st.success("Logged in as {}".format(username))
         else:
             st.error("Incorrect username or password")
-    # Initialize holdings
+    # Initialize holdings https://medium.com/@sugath.mudali/creating-a-stock-dashboard-with-streamlit-441039bdf7e0
     if 'holdings' not in st.session_state:
         st.session_state['holdings'] = []
     # Function to add a holding
@@ -58,7 +58,7 @@ with tab1:
         st.write(f"Holding {index + 1}: {holding['symbol']} - {holding['amount']} shares")
         if st.button(f"Delete Holding {index + 1}", key=f"delete_{index}"):
             delete_holding(index)
-    # Fetch data and calculate portfolio value
+    # Fetch data and calculate portfolio value https://medium.datadriveninvestor.com/build-a-stock-screening-dashboard-with-streamlit-7158cedf605c / https://python-yahoofinance.readthedocs.io/en/latest/
     if st.button("Update Portfolio"):
         total_values = pd.DataFrame()
         for holding in st.session_state['holdings']:
@@ -80,7 +80,7 @@ with tab1:
             # Display the data in a table format
             st.dataframe(total_values, width=700, height=300)
 with tab2:
-        # Function to format camelCase names into a readable format
+        # Function to format camelCase names into a readable format https://python-yahoofinance.readthedocs.io/en/latest/
     def format_camel_case(name):
         formatted_name = ''.join([' ' + char if char.isupper() else char for char in name]).strip()
         return formatted_name.title()
@@ -99,7 +99,7 @@ with tab2:
         # NewsAPI key
     news_api_key = 'd3e1cfc10e9e472ca85a16f294c9dc78'
 
-    # Function to fetch news
+    # Function to fetch news https://newsapi.org/docs
     def get_stock_news(symbol):
         base_url = "https://newsapi.org/v2/everything?"
         query = f"q={symbol}&apiKey={news_api_key}"
