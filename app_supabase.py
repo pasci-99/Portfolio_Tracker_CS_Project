@@ -74,12 +74,17 @@ else:
                 st.rerun()
     # endregion
     
+    # region Portfolio Value Chart
+    total_values = pd.DataFrame()
+    response = supabase.table("portfolio").select("stock_symbol", "quantity", "purchase_date").eq("username", myUserName).execute()
+    for holding in response.data:
+        st.write( holding["stock_symbol", "quantity", "purchase_date"])
 
 
 
-    
-    """ total_values = pd.DataFrame()
-    for holding in st.session_state['holdings']:
+
+
+ """    for holding in st.session_state['holdings']:
         stock = yf.Ticker(holding['symbol'])
         data = stock.history(start=holding['purchase_date'].strftime('%Y-%m-%d'))
         holding_value = data['Close'] * holding['amount']
@@ -100,5 +105,5 @@ else:
         st.line_chart(total_values['Total Value'])
         # Display the data in a table format
         st.dataframe(total_values, width=700, height=300) """
-
+    # endregion
     # endregion
