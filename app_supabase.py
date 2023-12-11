@@ -16,7 +16,7 @@ if 'username' not in st.session_state:
 
 # Get the current user's username
 myUserName = st.session_state.get('username')
-col3, col4, col_unused1, col_unused2, col_unused3 = st.columns(5)
+col3, col4 = st.columns(2)
 logo_path = "welink.png"  # Replace with the actual path to your image file
 logo_path = "Portfolio Tracker.jpg"  # Replace with the actual path to your image file
 col3.image(logo_path, width=80, use_column_width=False)
