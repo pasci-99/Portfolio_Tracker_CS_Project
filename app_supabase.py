@@ -103,7 +103,7 @@ else:
             # Display data as a line chart
             st.line_chart(total_values['Total Value'])
             # Display the data in a table format and show the stock symbols as columns
-            total_values.rename_index('Date',inplace=True)
+            total_values.index.rename('Date',inplace=True)
             st.dataframe(total_values, width=700, height=300)
         # endregion
 
