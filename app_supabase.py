@@ -16,10 +16,11 @@ if 'username' not in st.session_state:
 
 # Get the current user's username
 myUserName = st.session_state.get('username')
-st.title("Login and Elevate Your Portfolio " + myUserName)
-
+col3, col4, col_unused1, col_unused2, col_unused3 = st.columns(5)
+logo_path = "welink.png"  # Replace with the actual path to your image file
 logo_path = "Portfolio Tracker.jpg"  # Replace with the actual path to your image file
-st.image(logo_path, width=80, use_column_width=False)
+col3.image(logo_path, width=80, use_column_width=False)
+col4.title("Login and Elevate Your Portfolio " + myUserName)
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 if myUserName == "":
