@@ -22,16 +22,6 @@ logo_path = "welink.png"  # Replace with the actual path to your image file
 logo_path = "Portfolio Tracker rundes Logo.png"  # Replace with the actual path to your image file
 col3.image(logo_path, width=80, use_column_width=False)
 col4.title("Login and Elevate Your Portfolio " + myUserName)
-st.markdown(
-    """
-    <style>
-        body {
-            background-color: #3498db;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 if myUserName == "":
