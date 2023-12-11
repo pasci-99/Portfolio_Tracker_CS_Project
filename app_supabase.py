@@ -15,6 +15,7 @@ if 'username' not in st.session_state:
     st.session_state['username'] = ""
 
 # Get the current user's username
+st.set_page_config(page_title="Login and Elevate Your Portfolio", layout="wide")
 myUserName = st.session_state.get('username')
 col3, col4 = st.columns([0.15, 0.85])
 logo_path = "welink.png"  # Replace with the actual path to your image file
