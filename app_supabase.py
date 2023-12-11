@@ -16,7 +16,7 @@ if 'username' not in st.session_state:
 
 # Get the current user's username
 myUserName = st.session_state.get('username')
-st.title("Hello " + myUserName)
+st.title("Welcome to your Portfolio " + myUserName)
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 if myUserName == "":
