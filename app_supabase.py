@@ -20,7 +20,7 @@ myUserName = st.session_state.get('username')
 st.markdown(
     """
     <style>
-        body {
+        .streamlit-container {
             background-color: #89CFF0;  /* Baby Blue color */
         }
     </style>
