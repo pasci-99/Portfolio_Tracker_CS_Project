@@ -47,7 +47,6 @@ if myUserName == "":
 else:
     # region USER IS LOGGED IN
     with tab1:
-    print("This application allows you to record and track your stock purchases. The current and past price developments are depicted in a chart.")
         # region Add Holding Form
         with st.form("Add Holding"):
             # Input fields to collect the data from the user
