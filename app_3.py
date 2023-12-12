@@ -229,3 +229,24 @@ with tab2:
         plt.ylabel("Normalized Price")
         plt.legend()
         st.pyplot(plt)
+        
+    # Create pie chart for portfolio stocks
+    if st.button("Show Portfolio Pie Chart"):
+        # Extract portfolio data
+        portfolio_data = st.session_state['holdings']
+        if not portfolio_data:
+            st.warning("The portfolio is empty. Please add stocks.")
+        else:
+            # Extract stocks and shares
+            stocks = [holding['symbol'] for holding in portfolio_data]
+            shares = [holding['amount'] for holding in portfolio_data]
+    
+            # Create pie chart
+            fig, ax = plt.subplots()
+            ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
+            ax.axis('equal')  # Equal axes for a perfect pie chart
+    
+            # Display chart
+            st.pyplot(fig)
+
+   
