@@ -8,6 +8,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 
+# Set the background color to blue
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #3498db; /* Use your desired shade of blue */
+            color: white; /* Set text color to white for better visibility */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
 # Initialize the session state variable if not present
