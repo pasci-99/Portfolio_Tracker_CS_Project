@@ -1,15 +1,3 @@
-def set_bg_color():
-    # Define your custom style
-    st.markdown(
-        f"""
-        <style>
-            .reportview-container {{
-                background-color:'blue' #YourColorCode;
-            }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 
 # streamlit_app.py
 
