@@ -249,4 +249,10 @@ with tab2:
             # Display chart
             st.pyplot(fig)
 
-   
+   # Set the background color to baby blue
+    st.set_page_config(
+        page_title="Stock Holdings Value Tracker",
+        page_icon=":chart_with_upwards_trend:",  # Optional icon
+        layout="wide",  # 'wide' or 'centered'
+        initial_sidebar_state="expanded",  # 'auto', 'expanded', 'collapsed'
+        background_color="#89CFF0",  # Baby blue color
