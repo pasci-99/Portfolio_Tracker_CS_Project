@@ -8,14 +8,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 
-st.set_page_config(
-    page_title="Login and Elevate Your Portfolio",
-    layout="wide",
-    page_icon=None,  # Add your page icon if needed
-    initial_sidebar_state="expanded",
-    background_color="#3498db",  # Set your desired background color
-)
-
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
 # Initialize the session state variable if not present
