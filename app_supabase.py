@@ -9,6 +9,21 @@ import matplotlib.pyplot as plt
 import requests
 
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
+def set_bg_color():
+    # Define your custom style
+    st.markdown(
+        f"""
+        <style>
+            .reportview-container {{
+                background-color:'blue' #YourColorCode;
+            }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+# Call the function to set the background color
+set_bg_color()
 
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
