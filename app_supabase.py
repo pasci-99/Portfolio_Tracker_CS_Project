@@ -17,23 +17,21 @@ if 'username' not in st.session_state:
 # Get the current user's username
 st.set_page_config(page_title="Login and Elevate Your Portfolio", layout="wide")
 myUserName = st.session_state.get('username')
-st.markdown(
-    """
-    <style>
-        .streamlit-container {
-            border: 8px solid #89CFF0;  /* Baby Blue color */
-            border-radius: 10px;
-            padding: 20px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 col3, col4 = st.columns([0.1, 0.9])
 logo_path = "welink.png"  # Replace with the actual path to your image file
 logo_path = "Portfolio Tracker rundes Logo.png"  # Replace with the actual path to your image file
 col3.image(logo_path, width=80, use_column_width=False)
 col4.title("Login and Elevate Your Portfolio " + myUserName)
+
+# Display brief description
+st.markdown(
+    """
+    Welcome to the Portfolio Tracker! This application allows you to manage and analyze your investment portfolio. 
+    Log in to start adding your stock holdings, track their performance, and gain valuable insights into your investments. 
+    Elevate your portfolio management experience with real-time charts, news, and comparison tools.
+    """,
+    unsafe_allow_html=True
+)
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 if myUserName == "":
