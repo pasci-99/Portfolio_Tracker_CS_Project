@@ -1,14 +1,3 @@
-# streamlit_app.py
-
-import streamlit as st
-from supabase import create_client, Client
-from datetime import date, datetime
-import yfinance as yf
-import pandas as pd
-import matplotlib.pyplot as plt
-import requests
-
-supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 def set_bg_color():
     # Define your custom style
     st.markdown(
@@ -21,6 +10,18 @@ def set_bg_color():
         """,
         unsafe_allow_html=True
     )
+
+# streamlit_app.py
+
+import streamlit as st
+from supabase import create_client, Client
+from datetime import date, datetime
+import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
+import requests
+
+supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
 # Call the function to set the background color
 set_bg_color()
