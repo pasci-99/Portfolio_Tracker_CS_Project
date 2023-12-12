@@ -1,4 +1,3 @@
-
 # streamlit_app.py
 
 import streamlit as st
@@ -10,9 +9,6 @@ import matplotlib.pyplot as plt
 import requests
 
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
-
-# Call the function to set the background color
-set_bg_color()
 
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
