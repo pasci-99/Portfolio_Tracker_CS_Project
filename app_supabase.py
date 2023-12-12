@@ -131,7 +131,7 @@ else:
                     shares = [holding['quantity'] for holding in portfolio_data]
                     # Create pie chart
                     fig, ax = plt.subplots()
-                    ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
+                    ax.bar(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
                     ax.axis('equal')  # Equal axes for a perfect pie chart
                     # Display chart
                     st.pyplot(fig)
