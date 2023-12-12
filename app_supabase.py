@@ -21,7 +21,9 @@ st.markdown(
     """
     <style>
         .streamlit-container {
-            background-color: #89CFF0;  /* Baby Blue color */
+            border: 8px solid #89CFF0;  /* Baby Blue color */
+            border-radius: 10px;
+            padding: 20px;
         }
     </style>
     """,
