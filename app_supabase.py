@@ -17,6 +17,16 @@ if 'username' not in st.session_state:
 # Get the current user's username
 st.set_page_config(page_title="Login and Elevate Your Portfolio", layout="wide")
 myUserName = st.session_state.get('username')
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #89CFF0;  /* Baby Blue color */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 col3, col4 = st.columns([0.1, 0.9])
 logo_path = "welink.png"  # Replace with the actual path to your image file
 logo_path = "Portfolio Tracker rundes Logo.png"  # Replace with the actual path to your image file
