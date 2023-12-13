@@ -35,23 +35,10 @@ st.markdown(
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 
-if myUserName != "":
-    # Logout button at the top-right corner
-    st.markdown(
-        """
-        <style>
-        div.stButton > button {
-            float: right;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    if st.button("Logout"):
-        st.session_state['username'] = ""  # Reset the username in session state
+# Logout button
+if st.button("Logout"):
+    st.session_state['username'] = ""  # Reset the username in session state
 
-
-    
 if myUserName == "":
     # region USER IS NOT LOGGED IN
     with st.form("Login"):
