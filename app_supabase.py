@@ -137,22 +137,22 @@ else:
         # endregion
             
         # Portfolio Pie Chart Section
-            if st.button("Show Portfolio Pie Chart"):
-                # Extract portfolio data
-                response = supabase.table("portfolio").select("stock_symbol", "quantity").eq("username", myUserName).execute()
-                portfolio_data = response.data
-                if not portfolio_data:
-                    st.warning("The portfolio is empty. Please add stocks.")
-                else:
-                    # Extract stocks and shares
-                    stocks = [holding['stock_symbol'] for holding in portfolio_data]
-                    shares = [holding['quantity'] for holding in portfolio_data]
-                    # Create pie chart
-                    fig, ax = plt.subplots()
-                    ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
-                    ax.axis('equal')  # Equal axes for a perfect pie chart
-                    # Display chart
-                    st.pyplot(fig)
+        
+            # Extract portfolio data
+            response = supabase.table("portfolio").select("stock_symbol", "quantity").eq("username", myUserName).execute()
+            portfolio_data = response.data
+            if not portfolio_data:
+                st.warning("The portfolio is empty. Please add stocks.")
+            else:
+                # Extract stocks and shares
+                stocks = [holding['stock_symbol'] for holding in portfolio_data]
+                shares = [holding['quantity'] for holding in portfolio_data]
+                # Create pie chart
+                fig, ax = plt.subplots()
+                ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
+                ax.axis('equal')  # Equal axes for a perfect pie chart
+                # Display chart
+                st.pyplot(fig)
 
         with tab2:
         # Function to format camelCase names into a readable format https://python-yahoofinance.readthedocs.io/en/latest/
