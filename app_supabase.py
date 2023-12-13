@@ -10,6 +10,17 @@ import requests
 
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
+# Custom CSS to set the background color
+background_color_css = """
+<style>
+.stApp {
+    background-color: #FFFFFF;  /* Set your background color */
+}
+</style>
+"""
+
+# Inject custom CSS with markdown
+st.markdown(background_color_css, unsafe_allow_html=True)
 
 # Initialize the session state variable if not present
 if 'username' not in st.session_state:
