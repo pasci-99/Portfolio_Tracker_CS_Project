@@ -141,12 +141,22 @@ else:
             # Extract portfolio data
             response = supabase.table("portfolio").select("stock_symbol", "quantity").eq("username", myUserName).execute()
             portfolio_data = response.data
+
             if not portfolio_data:
                 st.warning("The portfolio is empty. Please add stocks.")
             else:
-                # Extract stocks and shares
-                stocks = [holding['stock_symbol'] for holding in portfolio_data]
-                shares = [holding['quantity'] for holding in portfolio_data]
+                # Aggregate stocks and shares
+                aggregated_data = {}
+                for holding in portfolio_data:
+                    if holding['stock_symbol'] in aggregated_data:
+                        aggregated_data[holding['stock_symbol']] += holding['quantity']
+                    else:
+                        aggregated_data[holding['stock_symbol']] = holding['quantity']
+
+                # Extract aggregated data for pie chart
+                stocks = list(aggregated_data.keys())
+                shares = list(aggregated_data.values())
+
                 # Create pie chart
                 fig, ax = plt.subplots()
                 ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
