@@ -28,7 +28,7 @@ col3, col4 = st.columns([0.1, 0.9])
 logo_path = "welink.png"  # Replace with the actual path to your image file
 logo_path = "Portfolio_Tracker_rundes_Logo-removebg.png"  # Replace with the actual path to your image file
 col3.image(logo_path, width=80, use_column_width=False)
-col4.title("Login and Elevate Your Portfolio " + myUserName)
+col4.title("Login and Elevate Your Portfolio ")
 
 
 
@@ -43,6 +43,7 @@ st.markdown(
 )
 
 if myUserName != "":
+    col4.title("Elevate Your Portfolio " + myUserName)
     # Logout button (had to move it to the top, since streamlit organizes the webpage based on where the code is in the script)
     col_logout = st.columns([0.9, 0.1])
     with col_logout[0]:
