@@ -1,4 +1,4 @@
-#file to adjust the appearance of the webpage
+#file to adjust the appearance of the webpage (keep an eye on the piechart, that the backgrounds match and the text is readable)
 [theme]
 base="dark"
 backgroundColor="#0F1116"
