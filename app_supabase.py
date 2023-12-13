@@ -30,6 +30,16 @@ logo_path = "Portfolio_Tracker_rundes_Logo-removebg.png"  # Replace with the act
 col3.image(logo_path, width=80, use_column_width=False)
 col4.title("Login and Elevate Your Portfolio " + myUserName)
 
+# Display brief description
+st.markdown(
+    """
+    Welcome to the Portfolio Tracker! This application allows you to manage and analyze your investment portfolio. 
+    Log in to start adding your stock holdings, track their performance, and gain valuable insights into your investments. 
+    Elevate your portfolio management experience with real-time charts, news, and comparison tools.
+    """,
+    unsafe_allow_html=True
+)
+
 if myUserName != "":
     # Logout button (had to move it to the top, since streamlit organizes the webpage based on where the code is in the script)
     col_logout = st.columns([0.9, 0.1])
@@ -65,17 +75,6 @@ if myUserName != "":
                     st.sidebar.write("---")
 
 
-    
-
-# Display brief description
-st.markdown(
-    """
-    Welcome to the Portfolio Tracker! This application allows you to manage and analyze your investment portfolio. 
-    Log in to start adding your stock holdings, track their performance, and gain valuable insights into your investments. 
-    Elevate your portfolio management experience with real-time charts, news, and comparison tools.
-    """,
-    unsafe_allow_html=True
-)
 
 
 if myUserName == "":
