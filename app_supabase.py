@@ -1,5 +1,5 @@
 # streamlit_app.py
-
+# needed libraries. also have to be in the requirements.txt file
 import streamlit as st
 from supabase import create_client, Client
 from datetime import date, datetime
@@ -7,6 +7,11 @@ import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
 import requests
+
+# First used st.connection, which however did not work properly and was documented very badly. Github repository only one Person and only 30 stars. (https://docs.streamlit.io/knowledge-base/tutorials/databases/supabase)
+# Switched to the normal python supabase, which is much better documented (https://supabase.com/docs/reference/javascript/typescript-support)
+# Supabase is used to store the users data (Database), such that the user doesn't have to reenter all the holdings during each session. (Store Holdings and associate it with the User) 
+# At the moment security isn't great (isn't the goal of the project), however it could be made super secure fairly easily, since the fundamental structure is set. (Row Level Security, Login with Password and Authentication would all be possible with a few tweaks)
 
 supabase: Client = create_client("https://pulfkaxpvhgvgvlgjpaj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bGZrYXhwdmhndmd2bGdqcGFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIxNTkzNzIsImV4cCI6MjAxNzczNTM3Mn0.twkOSqpf4M7qVREItNHb19rG7iWNli-dtc2DSdEdBlQ")
 
@@ -19,8 +24,8 @@ if 'username' not in st.session_state:
 st.set_page_config(page_title="Login and Elevate Your Portfolio", layout="wide")
 myUserName = st.session_state.get('username')
 col3, col4 = st.columns([0.1, 0.9])
-logo_path = "welink.png"  # Replace with the actual path to your image file
-logo_path = "Portfolio_Tracker_rundes_Logo-removebg.png"  # Replace with the actual path to your image file
+logo_path = "welink.png"
+logo_path = "Portfolio_Tracker_rundes_Logo-removebg.png"
 col3.image(logo_path, width=80, use_column_width=False)
 if myUserName != "":
     col4.title("Elevate Your Portfolio " + myUserName)
@@ -39,8 +44,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Logout button (had to move it to the top, since it looks like streamlit organizes the webpage based on where the code is in the script)
 if myUserName != "":
-    # Logout button (had to move it to the top, since it looks like streamlit organizes the webpage based on where the code is in the script)
     col_logout = st.columns([0.9, 0.1])
     with col_logout[0]:
         # Add some space to move the button to the right
@@ -49,7 +54,9 @@ if myUserName != "":
         if st.button("Logout"):
             st.session_state['username'] = ""  # Reset the username in session state
 
+
 if myUserName != "":
+    # two tabs for the different tools
     tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 
     # NewsAPI key
@@ -99,7 +106,7 @@ else:
             submitted = st.form_submit_button("Add Holding")
 
         if submitted:
-            # Convert the date to a string in ISO format before sending it to Supabase
+            # Convert the date to a string in ISO format before sending it to Supabase (initial problems with dateformat)
             formatted_purchase_date = purchase_date.isoformat() if isinstance(purchase_date, date) else purchase_date
             
             response = supabase.table("portfolio").insert(
@@ -128,7 +135,7 @@ else:
             with col3:
                 st.write(holding['purchase_date'])
             with col4:
-                # Use a unique key for each button
+                # Use a unique key for each button (must be unique, doesn't work otherwise)
                 if st.button("Delete", key=f"delete_{holding['id']}"):
                     response = supabase.table("portfolio").delete().eq('id', holding['id']).execute()
                     st.rerun()
@@ -141,7 +148,7 @@ else:
             stock = yf.Ticker(holding['stock_symbol'])
             data = stock.history(start=holding['purchase_date'])
             holding_value = data['Close'] * holding['quantity']
-            holding_value.name = holding['stock_symbol']+" " + holding['purchase_date']  # Naming the series with the symbol for identification
+            holding_value.name = holding['stock_symbol']+" " + holding['purchase_date']  # Naming the series with the symbol + purchase date for identification
             if total_values.empty:
                 total_values = holding_value.to_frame()
             else:
@@ -185,12 +192,12 @@ else:
                 # Create pie chart
                 fig, ax = plt.subplots()
                 ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
-                ax.axis('equal')  # Equal axes for a perfect pie chart
-                # Set the background color of the pie chart
+                ax.axis('equal')
+                # Set the background color of the pie chart (has to be in line with the config.toml file, such that the background colours match)
                 fig.set_facecolor('#0F1116')
                 ax.set_facecolor('#0F1116')
 
-                # Set the color of the text (labels and percentages)
+                # Set the color of the text (labels and percentages, maybe has to be adjusted if backgroundcolour gets changed)
                 for text in ax.texts:
                     text.set_color('#FFFFFF')
 
@@ -198,7 +205,7 @@ else:
                 st.pyplot(fig)
 
         with tab2:
-        # Function to format camelCase names into a readable format https://python-yahoofinance.readthedocs.io/en/latest/
+        # Function to format camelCase(https://www.javatpoint.com/camelcase-in-python) names into a readable format (https://python-yahoofinance.readthedocs.io/en/latest/)
             def format_camel_case(name):
                 formatted_name = ''.join([' ' + char if char.isupper() else char for char in name]).strip()
                 return formatted_name.title()
@@ -215,11 +222,11 @@ else:
         
 
 
-            # Initialize session state for stock symbols
+            # Initialize session state for stock symbols (Here no Database is needed like Supabase or Firebase to store the data)
             if 'num_stocks' not in st.session_state:
                 st.session_state['num_stocks'] = 1  # Start with 1 stock
 
-            # Fetch data for a sample stock to get all data points
+            # Fetch data for a sample stock to get all the possible data points
             sample_stock = yf.Ticker('AAPL')
             sample_data = sample_stock.info
 
@@ -227,7 +234,7 @@ else:
             all_data_points = [format_camel_case(point) for point in sample_data.keys()]
 
             # Multiselect dropdown for choosing data points
-            selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap', 'Sector', 'Dividend Yield', 'Payout Ratio', 'Currency', 'Price To Book'])
+            selected_data_points = st.multiselect('Select data points for comparison', all_data_points, default=['Current Price', 'Market Cap', 'Sector', 'Dividend Yield', 'Payout Ratio', 'Currency', 'Price To Book']) # Default selection (Can be changed) 
 
             # Function to add more stocks
             def add_stock():
@@ -266,6 +273,7 @@ else:
                 start_of_year = datetime.today().replace(month=1, day=1).strftime('%Y-%m-%d')
                 stock = yf.Ticker(symbol)
                 df = stock.history(start=start_of_year, end=today)
+                
                 # Normalize to 100 at the starting point
                 normalized_df = (df['Close'] / df['Close'].iloc[0]) * 100
                 return normalized_df
