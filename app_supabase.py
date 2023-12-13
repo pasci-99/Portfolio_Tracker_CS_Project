@@ -34,6 +34,11 @@ st.markdown(
 )
 
 tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
+
+# Logout button
+if st.button("Logout"):
+    st.session_state['username'] = ""  # Reset the username in session state
+    
 if myUserName == "":
     # region USER IS NOT LOGGED IN
     with st.form("Login"):
