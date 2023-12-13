@@ -184,7 +184,7 @@ else:
 
                 # Create pie chart
                 fig, ax = plt.subplots()
-                ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90, colors=['#FFFFFF'])
+                ax.pie(shares, labels=stocks, autopct='%1.1f%%', startangle=90)
                 ax.axis('equal')  # Equal axes for a perfect pie chart
                 # Set the background color of the pie chart
                 fig.set_facecolor('#0F1116')
