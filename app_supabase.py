@@ -30,15 +30,7 @@ logo_path = "Portfolio_Tracker_rundes_Logo-removebg.png"  # Replace with the act
 col3.image(logo_path, width=80, use_column_width=False)
 col4.title("Login and Elevate Your Portfolio " + myUserName)
 
-if myUserName != "":
-    # Logout button (had to move it to the top, since streamlit organizes the webpage based on where the code is in the script)
-    col_logout = st.columns([0.9, 0.1])
-    with col_logout[0]:
-        # Add some space to move the button to the right
-        st.write("")
-    with col_logout[1]:
-        if st.button("Logout"):
-            st.session_state['username'] = ""  # Reset the username in session state
+
 
 # Display brief description
 st.markdown(
@@ -49,6 +41,16 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+if myUserName != "":
+    # Logout button (had to move it to the top, since streamlit organizes the webpage based on where the code is in the script)
+    col_logout = st.columns([0.9, 0.1])
+    with col_logout[0]:
+        # Add some space to move the button to the right
+        st.write("")
+    with col_logout[1]:
+        if st.button("Logout"):
+            st.session_state['username'] = ""  # Reset the username in session state
 
 if myUserName != "":
     tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
