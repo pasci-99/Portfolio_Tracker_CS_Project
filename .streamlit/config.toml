@@ -1,7 +1,0 @@
-#file to adjust the appearance of the webpage
-[theme]
-base="light"
-backgroundColor="#FFFFFF"
-secondaryBackgroundColor="#F0F0F0"
-textColor="#262730"
-font="sans serif"
