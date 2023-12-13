@@ -40,9 +40,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
 
 if myUserName != "":
+    tab1, tab2 = st.tabs(["Portfolio Tracker", "Information Tool"])
     # Logout button 
     col_logout = st.columns([0.9, 0.1])
     with col_logout[0]:
