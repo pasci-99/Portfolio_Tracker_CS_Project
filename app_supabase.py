@@ -46,7 +46,7 @@ st.markdown(
 )
 
 if myUserName != "":
-    # Logout button (had to move it to the top, since streamlit organizes the webpage based on where the code is in the script)
+    # Logout button (had to move it to the top, since it looks like streamlit organizes the webpage based on where the code is in the script)
     col_logout = st.columns([0.9, 0.1])
     with col_logout[0]:
         # Add some space to move the button to the right
