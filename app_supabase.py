@@ -21,15 +21,7 @@ font="serif"
 if 'username' not in st.session_state:
     st.session_state['username'] = ""
 
-# Get the current user's username
-st.set_page_config(page_title="Login and Elevate Your Portfolio", layout="wide")
-myUserName = st.session_state.get('username')
-col3, col4 = st.columns([0.1, 0.9])
-logo_path = "welink.png"  # Replace with the actual path to your image file
-logo_path = "Portfolio_Tracker_rundes_Logo-removebg.png"  # Replace with the actual path to your image file
-col3.image(logo_path, width=80, use_column_width=False)
-col4.title("Login and Elevate Your Portfolio " + myUserName)
-
+# Logout section
 if myUserName != "":
     # Logout button (had to move it to the top, since streamlit organizes the webpage based on where the code is in the script)
     col_logout = st.columns([0.9, 0.1])
@@ -39,6 +31,17 @@ if myUserName != "":
     with col_logout[1]:
         if st.button("Logout"):
             st.session_state['username'] = ""  # Reset the username in session state
+
+# Get the current user's username
+st.set_page_config(page_title="Login and Elevate Your Portfolio", layout="wide")
+myUserName = st.session_state.get('username')
+col3, col4 = st.columns([0.1, 0.9])
+logo_path = "welink.png"  # Replace with the actual path to your image file
+logo_path = "Portfolio_Tracker_rundes_Logo-removebg.png"  # Replace with the actual path to your image file
+col3.image(logo_path, width=80, use_column_width=False)
+col4.title("Login and Elevate Your Portfolio " + myUserName)
+
+
 
 # Display brief description
 st.markdown(
