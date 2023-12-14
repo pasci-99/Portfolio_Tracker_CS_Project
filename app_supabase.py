@@ -1,4 +1,4 @@
-# streamlit_app.py
+# All needed files are stored in a Github repository and the application is deployed in the Streamlit Community Cloud. The application can be accessed with this link (https://portfoliotrackercsproject.streamlit.app/)
 # needed libraries. also have to be in the requirements.txt file
 import streamlit as st
 from supabase import create_client, Client
